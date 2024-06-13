@@ -9,23 +9,32 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 function Header(props) {
 
-  const cart = useSelector(state => state.cart)
+  const cart = useSelector(state => state.cart);
   console.log(cart);
 
-  const cart_Count = cart.cart.reduce((acc, v) => acc + v.qty, 0)
+  const categories = useSelector(state => state.categories);
+  console.log(categories);
+
+  const subcategori = useSelector(state => state.subcategories)
+  console.log(subcategori);
+
+  const product = useSelector(state => state.product)
+  console.log(product);
+
+  const cart_Count = cart.cart.reduce((acc, v) => acc + v.qty, 0);
   console.log(cart_Count);
 
-
-  const themcontext = useContext(ThemeContext)
+  const themcontext = useContext(ThemeContext);
   console.log(themcontext);
 
   const handletheme = () => {
-    themcontext.togaleTheme(themcontext.theme)
-  }
+    themcontext.togaleTheme(themcontext.theme);
+  };
+
   return (
     <div>
       {/* Navbar start */}
-      <div className={`container-fluid fixed-top${themcontext.theme}`}>
+      <div className={`container-fluid fixed-top ${themcontext.theme}`}>
         <div className="container topbar bg-primary d-none d-lg-block">
           <div className="d-flex justify-content-between">
             <div className="top-info ps-2">
@@ -36,14 +45,10 @@ function Header(props) {
               <a href="#" className="text-white"><small className="text-white mx-2">Privacy Policy</small>/</a>
               <a href="#" className="text-white"><small className="text-white mx-2">Terms of Use</small>/</a>
               <a href="#" className="text-white"><small className="text-white ms-2">Sales and Refunds</small></a>
-
-
-
-              {/* <button >Theme Change</button> */}
             </div>
           </div>
         </div>
-        <div className={`container px-0${themcontext.theme}`}>
+        <div className={`container px-0 ${themcontext.theme}`}>
           <nav className="navbar navbar-expand-xl">
             <a href="index.html" className="navbar-brand"><h1 className="text-primary display-6">Fruitables</h1></a>
             <button className="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -56,10 +61,21 @@ function Header(props) {
                 <NavLink to="/shopdetail" className="nav-item nav-link">Shop Detail</NavLink>
 
                 <div className="nav-item dropdown">
+                  <NavLink className="nav-link dropdown-toggle" data-bs-toggle="dropdown">Categories</NavLink>
+                  <div className="dropdown-menu m-0 bg-secondary rounded-0">
+                    {Array.isArray(categories) && categories.map((v) => (
+                      <NavLink key={v.id} to={`/category/${v.id}`} className="dropdown-item">
+                        {v.name}
+                      </NavLink>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="nav-item dropdown">
                   <NavLink href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</NavLink>
                   <div className="dropdown-menu m-0 bg-secondary rounded-0">
                     <NavLink to="/cart" className="dropdown-item">Cart</NavLink>
-                    <NavLink to="/checkout" className="dropdown-item">Chackout</NavLink>
+                    <NavLink to="/checkout" className="dropdown-item">Checkout</NavLink>
                     <NavLink to="/testimonial" className="dropdown-item">Testimonial</NavLink>
                     <NavLink to="/error" className="dropdown-item">404 Page</NavLink>
                     <NavLink to="/review" className="dropdown-item">Review</NavLink>
@@ -71,15 +87,12 @@ function Header(props) {
                 <button className="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i className="fas fa-search text-primary" /></button>
                 <NavLink to="/cart/" className="position-relative me-4 my-auto">
                   <i className="fa fa-shopping-bag fa-2x" />
-
                   <span className="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style={{ top: '-5px', left: 15, height: 20, minWidth: 20 }}>{cart_Count}</span>
                 </NavLink>
-
                 <a href="#" className="my-auto">
                   <i className="fas fa-user fa-2x" />
                 </a>
-
-                <IconButton onClick={handletheme} >
+                <IconButton onClick={handletheme}>
                   {themcontext.theme === 'light' ? <Brightness7Icon className='iconcolor' /> : <LightModeIcon className='iconcolor' />}
                 </IconButton>
               </div>
@@ -107,7 +120,6 @@ function Header(props) {
       </div>
       {/* Modal Search End */}
     </div>
-
   );
 }
 

@@ -5,6 +5,7 @@ import { ThemeContext } from '../../../context/Themcontext';
 
 import { shoptdata } from '../../../redux/action/shop.action';
 import { addtocart } from '../../../redux/reducer/slice/addtocart.slice';
+import { getdata } from '../../../redux/action/product.action';
 
 
 function Shop(props) {
@@ -22,13 +23,14 @@ function Shop(props) {
 
   const { id } = useParams();
   console.log(id);
+  
   // useEffect(() => {
   //   dispatch(addshop())
   // }, [])
 
 
 
-  const getdata = async () => {
+  const getdata1 = async () => {
     try {
       const response = await fetch("http://localhost:8000/fruits");
       const data = await response.json();
@@ -43,6 +45,7 @@ function Shop(props) {
 
   useEffect(() => {
     // getdata();
+    dispatch(getdata())
     dispatch(shoptdata())
   }, [])
 

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { productdata } from '../../../redux/action/product.action';
+import { getdata, productdata } from '../../../redux/action/product.action';
 import { decress, incress, remoeproduct } from '../../../redux/reducer/slice/addtocart.slice';
 import { object, string, number, date, InferType } from 'yup';
 import { useFormik } from 'formik';
@@ -24,7 +24,7 @@ function Cart(props) {
 
 
   useEffect(() => {
-    // dispatch(productdata())
+    dispatch(getdata())
     dispatch(couponget())
   }, [])
 

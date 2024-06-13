@@ -93,7 +93,6 @@ function Home(props) {
         <div>
             {/* Hero Start */}
             <div className={`container-fluid py-5 mb-5 ${themcontext.theme === 'light' ? 'hero-header' : null}`}>
-
                 <div className="container py-5">
                     <div className="row g-5 align-items-center">
                         <div className="col-md-12 col-lg-7">
@@ -134,8 +133,6 @@ function Home(props) {
             <div className="container-fluid featurs py-5">
                 <div className="container py-5">
                     <div className="row g-4">
-
-
                         {
                             facelity.facility.map((v, i) => (
                                 <div className="col-md-6 col-lg-3">
@@ -725,7 +722,7 @@ function Home(props) {
                                         <img src="img/best-product-1.jpg" className="img-fluid rounded-circle w-100" alt />
                                     </div>
                                     <div className="col-6">
-                                        <a href="#"  className={`h5 ${themcontext.theme === 'dark' ? 'colorclass' : ''}`}>Organic Tomato</a>
+                                        <a href="#" className={`h5 ${themcontext.theme === 'dark' ? 'colorclass' : ''}`}>Organic Tomato</a>
                                         <div className="d-flex my-3">
                                             <i className="fas fa-star text-primary" />
                                             <i className="fas fa-star text-primary" />
@@ -733,7 +730,7 @@ function Home(props) {
                                             <i className="fas fa-star text-primary" />
                                             <i className="fas fa-star" />
                                         </div>
-                                        <h4  className={`mb-3 ${themcontext.theme === 'dark' ? 'colorclass' : 'h5'}`}>3.12 $</h4>
+                                        <h4 className={`mb-3 ${themcontext.theme === 'dark' ? 'colorclass' : 'h5'}`}>3.12 $</h4>
                                         <a href="#" className="btn border border-secondary rounded-pill px-3 text-primary"><i className="fa fa-shopping-bag me-2 text-primary" /> Add to cart</a>
                                     </div>
                                 </div>
@@ -754,7 +751,7 @@ function Home(props) {
                                             <i className="fas fa-star text-primary" />
                                             <i className="fas fa-star" />
                                         </div>
-                                        <h4  className={`mb-3 ${themcontext.theme === 'dark' ? 'colorclass' : 'h5'}`}>3.12 $</h4>
+                                        <h4 className={`mb-3 ${themcontext.theme === 'dark' ? 'colorclass' : 'h5'}`}>3.12 $</h4>
                                         <a href="#" className="btn border border-secondary rounded-pill px-3 text-primary"><i className="fa fa-shopping-bag me-2 text-primary" /> Add to cart</a>
                                     </div>
                                 </div>
@@ -767,7 +764,7 @@ function Home(props) {
                                         <img src="img/best-product-3.jpg" className="img-fluid rounded-circle w-100" alt />
                                     </div>
                                     <div className="col-6">
-                                        <a href="#"  className={`h5 ${themcontext.theme === 'dark' ? 'colorclass' : ''}`}>Organic Tomato</a>
+                                        <a href="#" className={`h5 ${themcontext.theme === 'dark' ? 'colorclass' : ''}`}>Organic Tomato</a>
                                         <div className="d-flex my-3">
                                             <i className="fas fa-star text-primary" />
                                             <i className="fas fa-star text-primary" />
@@ -775,7 +772,7 @@ function Home(props) {
                                             <i className="fas fa-star text-primary" />
                                             <i className="fas fa-star" />
                                         </div>
-                                        <h4  className={`mb-3 ${themcontext.theme === 'dark' ? 'colorclass' : 'h5'}`}>3.12 $</h4>
+                                        <h4 className={`mb-3 ${themcontext.theme === 'dark' ? 'colorclass' : 'h5'}`}>3.12 $</h4>
                                         <a href="#" className="btn border border-secondary rounded-pill px-3 text-primary"><i className="fa fa-shopping-bag me-2 text-primary" /> Add to cart</a>
                                     </div>
                                 </div>
@@ -788,7 +785,7 @@ function Home(props) {
                                         <img src="img/best-product-4.jpg" className="img-fluid rounded-circle w-100" alt />
                                     </div>
                                     <div className="col-6">
-                                        <a href="#"  className={`h5 ${themcontext.theme === 'dark' ? 'colorclass' : ''}`}>Organic Tomato</a>
+                                        <a href="#" className={`h5 ${themcontext.theme === 'dark' ? 'colorclass' : ''}`}>Organic Tomato</a>
                                         <div className="d-flex my-3">
                                             <i className="fas fa-star text-primary" />
                                             <i className="fas fa-star text-primary" />
@@ -796,7 +793,7 @@ function Home(props) {
                                             <i className="fas fa-star text-primary" />
                                             <i className="fas fa-star" />
                                         </div>
-                                        <h4  className={`mb-3 ${themcontext.theme === 'dark' ? 'colorclass' : 'h5'}`}>3.12 $</h4>
+                                        <h4 className={`mb-3 ${themcontext.theme === 'dark' ? 'colorclass' : 'h5'}`}>3.12 $</h4>
                                         <a href="#" className="btn border border-secondary rounded-pill px-3 text-primary"><i className="fa fa-shopping-bag me-2 text-primary" /> Add to cart</a>
                                     </div>
                                 </div>
@@ -809,7 +806,7 @@ function Home(props) {
                                         <img src="img/best-product-5.jpg" className="img-fluid rounded-circle w-100" alt />
                                     </div>
                                     <div className="col-6">
-                                        <a href="#"  className={`h5 ${themcontext.theme === 'dark' ? 'colorclass' : ''}`}>Organic Tomato</a>
+                                        <a href="#" className={`h5 ${themcontext.theme === 'dark' ? 'colorclass' : ''}`}>Organic Tomato</a>
                                         <div className="d-flex my-3">
                                             <i className="fas fa-star text-primary" />
                                             <i className="fas fa-star text-primary" />
@@ -817,7 +814,7 @@ function Home(props) {
                                             <i className="fas fa-star text-primary" />
                                             <i className="fas fa-star" />
                                         </div>
-                                        <h4  className={`mb-3 ${themcontext.theme === 'dark' ? 'colorclass' : 'h5'}`}>3.12 $</h4>
+                                        <h4 className={`mb-3 ${themcontext.theme === 'dark' ? 'colorclass' : 'h5'}`}>3.12 $</h4>
                                         <a href="#" className="btn border border-secondary rounded-pill px-3 text-primary"><i className="fa fa-shopping-bag me-2 text-primary" /> Add to cart</a>
                                     </div>
                                 </div>
@@ -830,7 +827,7 @@ function Home(props) {
                                         <img src="img/best-product-6.jpg" className="img-fluid rounded-circle w-100" alt />
                                     </div>
                                     <div className="col-6">
-                                        <a href="#"  className={`h5 ${themcontext.theme === 'dark' ? 'colorclass' : ''}`}>Organic Tomato</a>
+                                        <a href="#" className={`h5 ${themcontext.theme === 'dark' ? 'colorclass' : ''}`}>Organic Tomato</a>
                                         <div className="d-flex my-3">
                                             <i className="fas fa-star text-primary" />
                                             <i className="fas fa-star text-primary" />
@@ -838,7 +835,7 @@ function Home(props) {
                                             <i className="fas fa-star text-primary" />
                                             <i className="fas fa-star" />
                                         </div>
-                                        <h4  className={`mb-3 ${themcontext.theme === 'dark' ? 'colorclass' : 'h5'}`}>3.12 $</h4>
+                                        <h4 className={`mb-3 ${themcontext.theme === 'dark' ? 'colorclass' : 'h5'}`}>3.12 $</h4>
                                         <a href="#" className="btn border border-secondary rounded-pill px-3 text-primary"><i className="fa fa-shopping-bag me-2 text-primary" /> Add to cart</a>
                                     </div>
                                 </div>
@@ -862,7 +859,7 @@ function Home(props) {
                             </div>
                         </div>
                         <div className="col-md-6 col-lg-6 col-xl-3">
-                        <div className={`text-center rounded ${themcontext.theme === 'dark' ? 'border border-secondary' : ''}`}>
+                            <div className={`text-center rounded ${themcontext.theme === 'dark' ? 'border border-secondary' : ''}`}>
                                 <img src="img/fruite-item-2.jpg" className="img-fluid rounded" alt />
                                 <div className="py-4">
                                     <a href="#" className={`h5 ${themcontext.theme === 'dark' ? 'colorclass' : ''}`}>Organic Tomato</a>
@@ -879,7 +876,7 @@ function Home(props) {
                             </div>
                         </div>
                         <div className="col-md-6 col-lg-6 col-xl-3">
-                        <div className={`text-center rounded ${themcontext.theme === 'dark' ? 'border border-secondary' : ''}`}>
+                            <div className={`text-center rounded ${themcontext.theme === 'dark' ? 'border border-secondary' : ''}`}>
                                 <img src="img/fruite-item-3.jpg" className="img-fluid rounded" alt />
                                 <div className="py-4">
                                     <a href="#" className={`h5 ${themcontext.theme === 'dark' ? 'colorclass' : ''}`}>Organic Tomato</a>
@@ -897,7 +894,7 @@ function Home(props) {
                             </div>
                         </div>
                         <div className="col-md-6 col-lg-6 col-xl-3">
-                        <div className={`text-center rounded ${themcontext.theme === 'dark' ? 'border border-secondary' : ''}`}>
+                            <div className={`text-center rounded ${themcontext.theme === 'dark' ? 'border border-secondary' : ''}`}>
                                 <img src="img/fruite-item-4.jpg" className="img-fluid rounded" alt />
                                 <div className="py-2">
                                     <a href="#" className={`h5 ${themcontext.theme === 'dark' ? 'colorclass' : ''}`}>Organic Tomato</a>
@@ -920,7 +917,7 @@ function Home(props) {
             {/* Fact Start */}
             <div className="container-fluid py-5">
                 <div className="container">
-                {/* <div className={`p-5 rounded ${themcontext.theme === 'dark' ? 'shadow-lg' : ''}`}> */}
+                    {/* <div className={`p-5 rounded ${themcontext.theme === 'dark' ? 'shadow-lg' : ''}`}> */}
                     <div className=" p-5 rounded">
                         <div className="row g-4 justify-content-center">
                             <div className="col-md-6 col-lg-6 col-xl-3">

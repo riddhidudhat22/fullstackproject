@@ -32,15 +32,9 @@ export const categoriReducer = (state = initialState, action) => {
 
         case UPDATE_CATEGORI:
             return {
-                ...state,
+                // ...state,
                 isLoading: false,
-                categori: state.categori.map((v) => {
-                    if (v._id === action.payload._id) {
-                        return action.payload
-                    } else {
-                        return v;
-                    }
-                })
+                categori: state.categori.map((v) => v._id === action.payload.data._id ? action.payload.data : v),
             }
         default:
             return state;
