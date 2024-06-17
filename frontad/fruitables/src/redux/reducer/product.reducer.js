@@ -23,7 +23,7 @@ export const productReducer = (state = initialState, action) => {
     case ADD_PRODUCT:
       return {
         isLoading: false,
-        product: state.product.concat(action.payload.data),
+        product: state.product.concat(action.payload),
         error: null
       };
     case UPDATE_PRODUCT:

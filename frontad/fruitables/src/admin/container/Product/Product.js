@@ -45,7 +45,7 @@ function Product(props) {
     }
   };
 
-  
+
 
   useEffect(() => {
     dispatch(getdata());
@@ -68,6 +68,16 @@ function Product(props) {
     subcategori_id: yup.string().required("Subcategory is required"),
     name: yup.string().required("Name is required"),
     description: yup.string().required("Description is required"),
+    image: yup.mixed()
+      .required("Please select an image")
+      .test("fileSize", "The file is too large", (value) => {
+        return value && value.size <= 2 * 1024 * 1024; // 2MB
+      })
+      .test("fileType", "Unsupported File Format", (value) => {
+        return (
+          value && ["image/jpeg", "image/png", "image/gif"].includes(value.type)
+        );
+      }),
     price: yup.string().required("Price is required"),
     stock: yup.number().required("Stock is required").positive().integer()
   });
@@ -78,6 +88,7 @@ function Product(props) {
       subcategori_id: '',
       name: '',
       description: '',
+      image: '',
       price: '',
       stock: ''
     },
@@ -93,7 +104,7 @@ function Product(props) {
     },
   });
 
-  const { handleBlur, handleChange, handleSubmit, touched, errors, values,setValues, setFieldValue } = formik;
+  const { handleBlur, handleChange, handleSubmit, touched, errors, values, setValues, setFieldValue } = formik;
 
 
   const handlecategorichange = async (categori_id) => {
@@ -103,17 +114,13 @@ function Product(props) {
     const data = await response.json();
     console.log(data);
     setselectsub(data.data)
-
-
-   
-    
   }
-const selectchange=(event)=>{
-  setFieldValue("categori_id",event.target.value)
-  handlecategorichange(event.target.value)
-  setFieldValue("subcatagori_id","")
+  const selectchange = (event) => {
+    setFieldValue("categori_id", event.target.value)
+    handlecategorichange(event.target.value)
+    setFieldValue("subcatagori_id", "")
 
-}
+  }
   const handleDelete = (_id) => {
     dispatch(deleteproductdata(_id));
   };
@@ -141,6 +148,20 @@ const selectchange=(event)=>{
     },
     { field: 'name', headerName: 'Name', width: 140 },
     { field: 'description', headerName: 'Description', width: 120 },
+    {
+      field: "image",
+      headerName: "Image",
+      width: 150,
+      renderCell: (params) => {
+        console.log(params.row.image);
+        if (params.row.image && params.row.image.url) {
+          return <img src={params.row.image.url
+          } alt={params.row.name} width={50} />;
+        } else {
+          return null;
+        }
+      },
+    },
     { field: 'price', headerName: 'Price', width: 90 },
     { field: 'stock', headerName: 'Stock', width: 90 },
     {
@@ -183,7 +204,7 @@ const selectchange=(event)=>{
           <br /><br />
           <Dialog open={open} onClose={handleClose}>
             <DialogTitle>Product</DialogTitle>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} method="post" enctype="multipart/form-data">
               <DialogContent>
                 <FormControl fullWidth margin="dense">
                   <InputLabel id="categori_id-label">--select Category--</InputLabel>
@@ -221,6 +242,22 @@ const selectchange=(event)=>{
                   {errors.subcategori_id && touched.subcategori_id ? errors.subcategori_id : ''}
                 </FormControl>
 
+                  <input
+                    id="image"
+                    name="image"
+                    label="image"
+                    type="file"
+                    fullWidth
+                    variant="standard"
+                    onChange={(event) => {
+                      setFieldValue("image", event.currentTarget.files[0]);
+                    }}
+                    onBlur={handleBlur}
+
+                    sx={{ marginBottom: 2 }}
+                  />
+                     {errors.image && touched.image ? <span style={{ color: "red" }}>{errors.image}</span> : null}
+          
                 <TextField
                   margin="dense"
                   id="name"
@@ -263,6 +300,7 @@ const selectchange=(event)=>{
                   error={errors.price && touched.price}
                   helperText={errors.price && touched.price ? errors.price : ''}
                 />
+                
                 <TextField
                   margin="dense"
                   id="stock"
@@ -277,6 +315,7 @@ const selectchange=(event)=>{
                   error={errors.stock && touched.stock}
                   helperText={errors.stock && touched.stock ? errors.stock : ''}
                 />
+
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
