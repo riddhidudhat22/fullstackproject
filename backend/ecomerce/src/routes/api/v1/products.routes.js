@@ -19,6 +19,7 @@ router.post('/add-product',
 );
 
 router.put('/update-product/:product_id',
+    upload.single("image"),
     product.udateproduct
 );
 

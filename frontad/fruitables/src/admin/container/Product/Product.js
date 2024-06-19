@@ -71,12 +71,18 @@ function Product(props) {
     image: yup.mixed()
       .required("Please select an image")
       .test("fileSize", "The file is too large", (value) => {
-        return value && value.size <= 2 * 1024 * 1024; // 2MB
+        if (value.size) {
+          return value && value.size <= 2 * 1024 * 1024; // 2MB
+        }
+        return true
       })
       .test("fileType", "Unsupported File Format", (value) => {
-        return (
-          value && ["image/jpeg", "image/png", "image/gif"].includes(value.type)
-        );
+        if (value.type) {
+          return (
+            value && ["image/jpeg", "image/png", "image/gif"].includes(value.type)
+          );
+        }
+        return true
       }),
     price: yup.string().required("Price is required"),
     stock: yup.number().required("Stock is required").positive().integer()
@@ -115,6 +121,7 @@ function Product(props) {
     console.log(data);
     setselectsub(data.data)
   }
+
   const selectchange = (event) => {
     setFieldValue("categori_id", event.target.value)
     handlecategorichange(event.target.value)
@@ -125,10 +132,11 @@ function Product(props) {
     dispatch(deleteproductdata(_id));
   };
 
-  const handleEdit = (data) => {
+  const handleEdit = async(data) => {
     setUpdate(data._id);
     setOpen(true);
     setValues(data);
+    await handlecategorichange(data.categori_id);
   };
 
   const columns = [
@@ -139,6 +147,7 @@ function Product(props) {
         return category ? category.name : '';
       }
     },
+
     {
       field: 'subcategori_id', headerName: 'Subcategory', width: 180,
       renderCell: (params) => {
@@ -189,6 +198,8 @@ function Product(props) {
       },
     },
   };
+
+  console.log("value++++++", values.image.url);
 
   return (
     <>
@@ -242,22 +253,32 @@ function Product(props) {
                   {errors.subcategori_id && touched.subcategori_id ? errors.subcategori_id : ''}
                 </FormControl>
 
-                  <input
-                    id="image"
-                    name="image"
-                    label="image"
-                    type="file"
-                    fullWidth
-                    variant="standard"
-                    onChange={(event) => {
-                      setFieldValue("image", event.currentTarget.files[0]);
-                    }}
-                    onBlur={handleBlur}
+                <input
+                  id="image"
+                  name="image"
+                  label="image"
+                  type="file"
+                  fullWidth
+                  variant="standard"
+                  onChange={(event) => {
+                    setFieldValue("image", event.currentTarget.files[0]);
+                  }}
+                  onBlur={handleBlur}
 
-                    sx={{ marginBottom: 2 }}
-                  />
-                     {errors.image && touched.image ? <span style={{ color: "red" }}>{errors.image}</span> : null}
-          
+                  sx={{ marginBottom: 2 }}
+                />
+                {
+                  values.image &&
+                  <img src={values.image.url ? values.image.url : URL.createObjectURL(values.image)} width={50} />
+                }
+                
+                {/* {
+                  values.image &&
+                  <img src={typeof values.image.url === 'string' ? values.image.url : URL.createObjectURL(values.image)} width={50} alt="Product" />
+                } */}
+
+                {errors.image && touched.image ? <span style={{ color: "red" }}>{errors.image}</span> : null}
+
                 <TextField
                   margin="dense"
                   id="name"
@@ -300,7 +321,7 @@ function Product(props) {
                   error={errors.price && touched.price}
                   helperText={errors.price && touched.price ? errors.price : ''}
                 />
-                
+
                 <TextField
                   margin="dense"
                   id="stock"

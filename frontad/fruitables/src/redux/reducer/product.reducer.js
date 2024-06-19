@@ -26,11 +26,19 @@ export const productReducer = (state = initialState, action) => {
         product: state.product.concat(action.payload),
         error: null
       };
+
     case UPDATE_PRODUCT:
       return {
         ...state,
         isLoading: false,
-        product: state.product.map((v) => v._id === action.payload.data._id ? action.payload.data : v),
+        // product: state.product.map((v) => v._id === action.payload.data._id ? action.payload.data : v),
+        product: state.product.map((v) => {
+          if (v._id === action.payload._id) {
+              return action.payload
+          } else {
+              return v;
+          }
+      })     
       };
     case DELETE_PRODUCT:
       return {

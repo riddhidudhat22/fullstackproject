@@ -19,6 +19,7 @@ export const getdata = () => async (dispatch) => {
 };
 
 export const addproductdata = (data) => async (dispatch) => {
+  // console.log("datadatadataaddd", data);
   // try {
   //   const response = await fetch("http://localhost:8000/api/v1/products/add-product", {
   //     method: 'POST',
@@ -44,31 +45,31 @@ export const addproductdata = (data) => async (dispatch) => {
   }
 };
 
-export const editproductdata = (data) => async (dispatch) => {
-  // try {
-  //   const response = await fetch("http://localhost:8000/api/v1/products/update-product/" + data._id, {
-  //     method: 'PUT',
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify(data)
-  //   });
-  //   const datapro = await response.json();
-  //   dispatch({ type: UPDATE_PRODUCT, payload: datapro });
-  // } catch (error) {
-  //   dispatch(errorproduct(error.message));
-  // }
+export const editproductdata = (product) => async (dispatch) => {
+  console.log("datadatadata", product);
+
   try {
-    await axios.put(baseURL + 'api/v1/products/update-product/' + data._id, data,{
+    // const response = await fetch("http://localhost:8000/api/v1/products/update-product/" + data._id, {
+    //   method: 'PUT',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify(data)
+    // });
+    // const datapro = await response.json();
+    // dispatch({ type: UPDATE_PRODUCT, payload: datapro });
+
+    const response = await axios.put(`http://localhost:8000/api/v1/products/update-product/${product._id}`, product, {
       headers: {
         'Content-Type': 'multipart/form-data'
       },
     })
-    console.log(data)
-   
+    dispatch({ type: UPDATE_PRODUCT, payload: response.data.data });
+
   } catch (error) {
     dispatch(errorproduct(error.message));
   }
+
 };
 
 export const deleteproductdata = (_id) => async (dispatch) => {

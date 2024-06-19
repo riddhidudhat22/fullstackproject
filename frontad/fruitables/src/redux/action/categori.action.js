@@ -9,23 +9,26 @@ export const getcategori = () => async (dispatch) => {
   dispatch({ type: GET_CATEGORI, payload: data })
 }
 
-export const handelAdd = (data) => async (dispatch) => {
 
-  const response = await fetch("http://localhost:8000/api/v1/categories/add-category", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  })
-
-  const datares = await response.json();
-  dispatch({ type: ADD_CATEGORI, payload: datares })
-}
+export const handleAdd = (data) => async (dispatch) => {
+  try {
+    console.log("addd...");
+    const response = await fetch("http://localhost:8000/api/v1/categories/add-category",{
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+    const datares = await response.json();
+    dispatch({ type: ADD_CATEGORI, payload: datares });
+  } catch (error) {
+    console.error("Error adding category:", error);
+  }
+};
 
 
 export const handledelete = (_id) => async (dispatch) => {
-
 
   try {
     await fetch("http://localhost:8000/api/v1/categories/delete-category/" + _id, {

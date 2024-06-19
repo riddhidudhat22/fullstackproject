@@ -98,6 +98,7 @@ const deleteproduct = async (req, res) => {
         const product = await Products.findByIdAndDelete(req.params.product_id)
         console.log(product);
 
+        
         if (!product) {
             res.status(404).json({
                 success: false,
@@ -118,28 +119,81 @@ const deleteproduct = async (req, res) => {
 }
 
 const udateproduct = async (req, res) => {
-    // console.log(req.params.categori_id,req.body);
-    try {
-        const product = await Products.findByIdAndUpdate(req.params.product_id, req.body, { new: true, runValidators: true })
-        console.log(product);
 
+    console.log(req.params.product_id, req.body, req.file);
+
+    if (req.file) {
+        console.log("new file");
+
+        const filename = await updatefile(req.file.path, 'product')
+        console.log(filename);
+
+        const updatedProductData = {
+            ...req.body,
+            image: {
+                public_id: filename.public_id,
+                url: filename.url
+            }
+        };
+
+        const product = await Products.findByIdAndUpdate(req.params.product_id, updatedProductData, { new: true, runValidators: true });
+          
         if (!product) {
             res.status(400).json({
                 success: false,
-                message: 'categori not found',
+                message: 'product not found',
             })
         }
         res.status(200).json({
             success: true,
-            message: 'categori update successfully',
+            message: 'product update successfully',
             data: product
         })
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Internal error' + error.message
-        })
+    } else {
+        console.log("old file");
+        try {
+            const product = await Products.findByIdAndUpdate(req.params.product_id, req.body, { new: true, runValidators: true })
+            console.log(product);
+
+            if (!product) {
+                res.status(400).json({
+                    success: false,
+                    message: 'product not found',
+                })
+            }
+            res.status(200).json({
+                success: true,
+                message: 'product update successfully',
+                data: product
+            })
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                message: 'Internal error' + error.message
+            })
+        }
     }
+    // try {
+    //     const product = await Products.findByIdAndUpdate(req.params.product_id, req.body, { new: true, runValidators: true })
+    //     console.log(product);
+
+    //     if (!product) {
+    //         res.status(400).json({
+    //             success: false,
+    //             message: 'categori not found',
+    //         })
+    //     }
+    //     res.status(200).json({
+    //         success: true,
+    //         message: 'categori update successfully',
+    //         data: product
+    //     })
+    // } catch (error) {
+    //     res.status(500).json({
+    //         success: false,
+    //         message: 'Internal error' + error.message
+    //     })
+    // }
 }
 module.exports = {
     listproducts,

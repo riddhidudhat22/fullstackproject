@@ -14,7 +14,7 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useDispatch, useSelector } from 'react-redux';
-import { editecategori, getcategori, handelAdd, handledelete } from '../../../redux/action/categori.action';
+import { editecategori, getcategori, handelAdd, handleAdd, handledelete } from '../../../redux/action/categori.action';
 
 function Category(props) {
   const [open, setOpen] = React.useState(false);
@@ -60,23 +60,23 @@ function Category(props) {
   // getdata();
   // };
 
-  const getdata = async () => {
-    // const localdata = JSON.parse(localStorage.getItem('category'));
-    // if (localdata) {
-    //   setdata(localdata);
-    // }
-    // const response = await fetch("http://localhost:8000/api/v1/categories/list-category");
-    // const data = await response.json();
-    // console.log(data);
-    // setdata(data.data)
-    dispatch(getcategori())
-  };
+  // const getdatacat = async () => {
+  //   // const localdata = JSON.parse(localStorage.getItem('category'));
+  //   // if (localdata) {
+  //   //   setdata(localdata);
+  //   // }
+  //   // const response = await fetch("http://localhost:8000/api/v1/categories/list-category");
+  //   // const data = await response.json();
+  //   // console.log(data);
+  //   // setdata(data.data)
+  //   dispatch(getcategori())
+  // };
 
   useEffect(() => {
-    getdata();
-
-  }, []);
-
+    // getdatacat();
+    dispatch(getcategori())
+  },
+   []);
 
   // const handleediteData = async (data) => {
 
@@ -114,7 +114,7 @@ function Category(props) {
       if (update) {
         dispatch(editecategori(values))
       } else {
-        dispatch(handelAdd(values));
+        dispatch(handleAdd(values));
       }
 
       resetForm()
