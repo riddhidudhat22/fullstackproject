@@ -11,7 +11,7 @@ import { HashLoader } from 'react-spinners';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import * as yup from 'yup';
-import { addproductdata, deleteproductdata, editproductdata, getdata } from '../../../redux/action/product.action';
+import { addproductdata, deleteproductdata, editproductdata, getdata, getdatapro } from '../../../redux/action/product.action';
 
 function Product(props) {
   const [open, setOpen] = useState(false);
@@ -48,7 +48,7 @@ function Product(props) {
 
 
   useEffect(() => {
-    dispatch(getdata());
+    dispatch(getdatapro());
     getCategoryData();
     getSubcategoryData();
   }, [dispatch]);

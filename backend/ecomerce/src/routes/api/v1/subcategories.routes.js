@@ -29,4 +29,23 @@ router.get('/getsubcategoridata-by-categorydata/:categori_id',
     subcategoriescontroler.getsubcategoridatawith
 )
 
+
+router.get("/inactive",
+    subcategoriescontroler.inactivesubcategory
+)
+
+router.get('/parent-of-subcategory/:categori_id',
+    subcategoriescontroler.subcategorioncategory
+)
+
+router.get('/count-active',
+    subcategoriescontroler.activesubcategory
+)
+
+router.get('/most-products',
+    subcategoriescontroler.highestcategori
+)
+router.get('/count-products',
+    subcategoriescontroler.productwithsubcategori
+)
 module.exports = router;

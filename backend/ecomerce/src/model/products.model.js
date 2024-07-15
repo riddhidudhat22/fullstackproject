@@ -12,6 +12,11 @@ const productScheema = new mongoose.Schema(
             ref: 'Subcategories',
             // require: true
         },
+        subcategori_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Subcategories',
+            // require: true
+        },
         name: {
             type: String,
             required: true,

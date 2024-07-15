@@ -26,4 +26,34 @@ router.delete('/delete-category/:categori_id',
     categoriescontroler.deletecategories
 );
 
+router.get("/category/count-active",
+    categoriescontroler.activecategory
+)
+
+router.get("/category/inactive",
+    categoriescontroler.inactivecategory
+)
+
+
+router.get("/category/most-products",
+    categoriescontroler.highestnum
+)
+
+router.get("/category/average-products",
+    categoriescontroler.averagenuproduct
+)
+
+router.get("/category/count-subcategories",
+    categoriescontroler.countsubcategories
+)
+
+router.get("/category-subcategory/:categori_id",
+    categoriescontroler.subcategorioncategori
+
+)
+
 module.exports = router;
+
+
+
+  

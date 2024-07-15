@@ -9,6 +9,7 @@ import addtocartSlice from "./slice/addtocart.slice";
 import couponSlice from "./slice/coupon.slice";
 import { categoriReducer } from "./categori.reducer";
 import subcategoriSlice from "./slice/subcategori.slice";
+import { variantReducer } from "./variant.reducer";
 
 // import { counterSlice } from "./slice/couner.slice";
 
@@ -24,5 +25,6 @@ export const rootReducer = combineReducers({
     cart: addtocartSlice,
     coupon: couponSlice,
     categories:categoriReducer,
-    subcategories:subcategoriSlice
+    subcategories:subcategoriSlice,
+    variants:variantReducer
 })

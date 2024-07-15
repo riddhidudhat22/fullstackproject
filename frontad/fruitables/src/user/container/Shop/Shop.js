@@ -5,29 +5,42 @@ import { ThemeContext } from '../../../context/Themcontext';
 
 import { shoptdata } from '../../../redux/action/shop.action';
 import { addtocart } from '../../../redux/reducer/slice/addtocart.slice';
-import { getdata } from '../../../redux/action/product.action';
+import { getdatapro } from '../../../redux/action/product.action';
+// import { getdata, getdatapro } from '../../../redux/action/product.action';
 
 
 function Shop(props) {
 
   const [fruite, setfruite] = useState([]);
   const [serch, setserch] = useState('');
+  const [priceData, setPriceData] = useState([]);
+  const [shopData, setShopData] = useState([]);
+  const [catagory, setCatagory] = useState([]);
+  const [type, setType] = useState([]);
+  // const [search, setSearchData] = useState("");
+  const [protype, setProType] = useState("");
 
   const shop1 = useSelector(state => state.shop)
   console.log(shop1);
 
 
-
+  const product = useSelector(state => state.product)
+  console.log(product);
 
   const dispatch = useDispatch()
 
   const { id } = useParams();
   console.log(id);
-  
+
   // useEffect(() => {
-  //   dispatch(addshop())
+  //   const productsdata = product.product.filter((item) => item.subcategori_id === id );
+  //   setProductData(productsdata)
   // }, [])
 
+  useEffect(() => {
+    dispatch(shoptdata())
+    dispatch(getdatapro())
+  }, [])
 
 
   const getdata1 = async () => {
@@ -43,11 +56,11 @@ function Shop(props) {
   }
 
 
-  useEffect(() => {
-    // getdata();
-    dispatch(getdata())
-    dispatch(shoptdata())
-  }, [])
+  // useEffect(() => {
+  //   // getdata();
+  //   dispatch(getdata())
+  //   dispatch(shoptdata())
+  // }, [])
 
   const handelserch = () => {
     let fdata = []
@@ -64,10 +77,10 @@ function Shop(props) {
   const cart = useSelector(state => state.cart)
   console.log(cart);
 
- 
+
 
   const handalproduct = (id) => {
-    dispatch(addtocart({id,countqty:1}));
+    dispatch(addtocart({ id, countqty: 1 }));
   }
 
   const themcontext = useContext(ThemeContext)
@@ -92,7 +105,7 @@ function Shop(props) {
       {/* Fruits Shop Start*/}
       <div className="container-fluid fruite py-5">
         <div className="container py-5">
-          <h1 className={`mb-4 ${themcontext.theme === 'dark' ? 'colorclass':''}`}>Fresh fruits shop</h1>
+          <h1 className={`mb-4 ${themcontext.theme === 'dark' ? 'colorclass' : ''}`}>Fresh fruits shop</h1>
           <div className="row g-4">
             <div className="col-lg-12">
               <div className="row g-4">
@@ -122,82 +135,82 @@ function Shop(props) {
                   <div className="row g-4">
                     <div className="col-lg-12">
                       <div className="mb-3">
-                        <h4 className={`${themcontext.theme === 'dark' ? 'colorclass':''}`}>Categories</h4>
-                        <ul className="list-unstyled fruite-categorie">
-
-                          <li >
-                            <div className="d-flex justify-content-between fruite-name">
-                              <a href="#"><i className="fas fa-apple-alt me-2" />Apples</a>
-                              <span>(3)</span>
-                            </div>
-                          </li>
-                          <li>
-                            <div className="d-flex justify-content-between fruite-name">
-                              <a href="#"><i className="fas fa-apple-alt me-2" />Oranges</a>
-                              <span>(5)</span>
-                            </div>
-                          </li>
-                          <li>
-                            <div className="d-flex justify-content-between fruite-name">
-                              <a href="#"><i className="fas fa-apple-alt me-2" />Strawbery</a>
-                              <span>(2)</span>
-                            </div>
-                          </li>
-                          <li>
-                            <div className="d-flex justify-content-between fruite-name">
-                              <a href="#"><i className="fas fa-apple-alt me-2" />Banana</a>
-                              <span>(8)</span>
-                            </div>
-                          </li>
-                          <li>
-                            <div className="d-flex justify-content-between fruite-name">
-                              <a href="#"><i className="fas fa-apple-alt me-2" />Pumpkin</a>
-                              <span>(5)</span>
-                            </div>
-                          </li>
-                        </ul>
+                        <h4 className={`${themcontext.theme === 'dark' ? 'colorclass' : ''}`}>Categories</h4>
+                        {catagory.map((n) => (
+                          <ul className="list-unstyled fruite-categorie">
+                            <li>
+                              <div className="d-flex justify-content-between fruite-name">
+                                <a href="#">
+                                  <i className="fas fa-apple-alt me-2" />
+                                  {n}
+                                </a>
+                                <span>
+                                  (
+                                  {
+                                    shopData.filter((v) => v.name === n)
+                                      .length
+                                  }
+                                  )
+                                </span>
+                              </div>
+                            </li>
+                          </ul>
+                        ))}
                       </div>
                     </div>
                     <div className="col-lg-12">
                       <div className="mb-3">
-                        <h4 className={`mb-2 ${themcontext.theme === 'dark' ? 'colorclass':''}`}>Price</h4>
-                        <input type="range" className="form-range w-100" id="rangeInput" name="rangeInput" min={0} max={500} defaultValue={0} oninput="amount.value=rangeInput.value" />
+                        <h4 className={`mb-2 ${themcontext.theme === 'dark' ? 'colorclass' : ''}`}>Price</h4>
+                        <input onChange={event => setPriceData(event.target.value)} type="range" className="form-range w-100" id="rangeInput" name="rangeInput" min={0} max={500} defaultValue={0} oninput="amount.value=rangeInput.value" />
                         <output id="amount" name="amount" min-velue={0} max-value={500} htmlFor="rangeInput">0</output>
                       </div>
                     </div>
                     <div className="col-lg-12">
                       <div className="mb-3">
-                        <h4 className={`${themcontext.theme === 'dark' ? 'colorclass':''}`}>Additional</h4>
-                        <div className="mb-2">
-                          <input type="radio" className="me-2" id="Categories-1" name="Categories-1" defaultValue="Beverages" />
+                        <h4 className={`${themcontext.theme === 'dark' ? 'colorclass' : ''}`}>Additional</h4>
+                        {/* <div className="mb-2">
+                          <input onChange={event => setType(event.target.value)} type="radio" className="me-2" id="Categories-1" name="Categories-1" defaultValue="Beverages" />
                           <label htmlFor="Categories-1"> Organic</label>
                         </div>
                         <div className="mb-2">
-                          <input type="radio" className="me-2" id="Categories-2" name="Categories-1" defaultValue="Beverages" />
+                          <input onChange={event => setType(event.target.value)} type="radio" className="me-2" id="Categories-2" name="Categories-1" defaultValue="Beverages" />
                           <label htmlFor="Categories-2"> Fresh</label>
                         </div>
                         <div className="mb-2">
-                          <input type="radio" className="me-2" id="Categories-3" name="Categories-1" defaultValue="Beverages" />
+                          <input onChange={event => setType(event.target.value)} type="radio" className="me-2" id="Categories-3" name="Categories-1" defaultValue="Beverages" />
                           <label htmlFor="Categories-3"> Sales</label>
                         </div>
                         <div className="mb-2">
-                          <input type="radio" className="me-2" id="Categories-4" name="Categories-1" defaultValue="Beverages" />
+                          <input onChange={event => setType(event.target.value)} type="radio" className="me-2" id="Categories-4" name="Categories-1" defaultValue="Beverages" />
                           <label htmlFor="Categories-4"> Discount</label>
                         </div>
                         <div className="mb-2">
-                          <input type="radio" className="me-2" id="Categories-5" name="Categories-1" defaultValue="Beverages" />
+                          <input onChange={event => setType(event.target.value)} type="radio" className="me-2" id="Categories-5" name="Categories-1" defaultValue="Beverages" />
                           <label htmlFor="Categories-5"> Expired</label>
-                        </div>
+                        </div> */}
+                        {type.map((n, i) => (
+                          <div className="mb-2">
+                            <input
+                              onChange={() => setProType(n)}
+                              type="radio"
+                              className="me-2"
+                              id="Categories-1"
+                              name="Categories-1"
+                              defaultValue="Beverages"
+                            />
+                            <label htmlFor="Categories-1">{n}</label>
+                          </div>
+                        ))}
                       </div>
                     </div>
                     <div className="col-lg-12">
-                      <h4 className= {`mb-3 ${themcontext.theme === 'dark' ? 'colorclass':''}`}>Featured products</h4>
+                      <h4 className={`mb-3 ${themcontext.theme === 'dark' ? 'colorclass' : ''}`}>Featured products</h4>
                       <div className="d-flex align-items-center justify-content-start">
                         <div className="rounded me-4" style={{ width: 100, height: 100 }}>
                           <img src="img/featur-1.jpg" className="img-fluid rounded" alt />
                         </div>
                         <div>
-                          <h6 className={`mb-2 ${themcontext.theme === 'dark' ? 'colorclass':''}`}>Big Banana</h6>
+                          <h6 className={`mb-2 ${themcontext.theme === 'dark' ? 'colorclass' : ''}`}>Big Banana</h6>
                           <div className="d-flex mb-2">
                             <i className="fa fa-star text-secondary" />
                             <i className="fa fa-star text-secondary" />
@@ -206,7 +219,7 @@ function Shop(props) {
                             <i className="fa fa-star" />
                           </div>
                           <div className="d-flex mb-2">
-                            <h5 className={`fw-bold me-2 ${themcontext.theme === 'dark' ? 'colorclass':''}`}>2.99 $</h5>
+                            <h5 className={`fw-bold me-2 ${themcontext.theme === 'dark' ? 'colorclass' : ''}`}>2.99 $</h5>
                             <h5 className="text-danger text-decoration-line-through">4.11 $</h5>
                           </div>
                         </div>
@@ -216,7 +229,7 @@ function Shop(props) {
                           <img src="img/featur-2.jpg" className="img-fluid rounded" alt />
                         </div>
                         <div>
-                          <h6 className={`mb-2 ${themcontext.theme === 'dark' ? 'colorclass':''}`}>Big Banana</h6>
+                          <h6 className={`mb-2 ${themcontext.theme === 'dark' ? 'colorclass' : ''}`}>Big Banana</h6>
                           <div className="d-flex mb-2">
                             <i className="fa fa-star text-secondary" />
                             <i className="fa fa-star text-secondary" />
@@ -225,7 +238,7 @@ function Shop(props) {
                             <i className="fa fa-star" />
                           </div>
                           <div className="d-flex mb-2">
-                            <h5 className={`fw-bold me-2 ${themcontext.theme === 'dark' ? 'colorclass':''}`}>2.99 $</h5>
+                            <h5 className={`fw-bold me-2 ${themcontext.theme === 'dark' ? 'colorclass' : ''}`}>2.99 $</h5>
                             <h5 className="text-danger text-decoration-line-through">4.11 $</h5>
                           </div>
                         </div>
@@ -235,7 +248,7 @@ function Shop(props) {
                           <img src="img/featur-3.jpg" className="img-fluid rounded" alt />
                         </div>
                         <div>
-                          <h6 className={`mb-2 ${themcontext.theme === 'dark' ? 'colorclass':''}`}>Big Banana</h6>
+                          <h6 className={`mb-2 ${themcontext.theme === 'dark' ? 'colorclass' : ''}`}>Big Banana</h6>
                           <div className="d-flex mb-2">
                             <i className="fa fa-star text-secondary" />
                             <i className="fa fa-star text-secondary" />
@@ -244,7 +257,7 @@ function Shop(props) {
                             <i className="fa fa-star" />
                           </div>
                           <div className="d-flex mb-2">
-                            <h5 className={`fw-bold me-2 ${themcontext.theme === 'dark' ? 'colorclass':''}`}>2.99 $</h5>
+                            <h5 className={`fw-bold me-2 ${themcontext.theme === 'dark' ? 'colorclass' : ''}`}>2.99 $</h5>
                             <h5 className="text-danger text-decoration-line-through">4.11 $</h5>
                           </div>
                         </div>
@@ -266,8 +279,9 @@ function Shop(props) {
                 <div className="col-lg-9">
                   <div className="row g-4 justify-content-center">
 
-                    {
-                      shop1.shop.map((v) => (
+                    {/* {
+                      // shop1.shop.map((v) => (
+                        prodetData.map((v)=>(
                         <div className="col-md-6 col-lg-6 col-xl-4">
                           <Link to={`/shop/${v.id}`}>
                             <div className="rounded position-relative fruite-item">
@@ -287,8 +301,45 @@ function Shop(props) {
                           </Link>
                         </div>
                       ))
-                    }
-
+                    } */}
+                    {product.product.map((v, i) => (
+                      <div className="col-md-6 col-lg-6 col-xl-4" key={i}>
+                        <Link to={`/shop/${v._id}`}>
+                          <div className="rounded position-relative fruite-item">
+                            <div className="fruite-img">
+                              {v.image && <img
+                                src={v.image.url}
+                                className="img-fluid w-100 rounded-top"
+                                alt=""
+                              />}
+                            </div>
+                            <div
+                              className="text-white bg-secondary px-3 py-1 rounded position-absolute"
+                              style={{ top: 10, left: 10, textAlign: "center" }}
+                            >
+                              Fruits
+                            </div>
+                            <div className="p-4 border border-secondary border-top-0 rounded-bottom">
+                              <h4>{v.name}</h4>
+                              <p>{v.description}</p>
+                              <div className="d-flex justify-content-between flex-lg-wrap">
+                                <p className="text-dark fs-5 fw-bold mb-0">
+                                  $ {v.price} / kg
+                                </p>
+                                <p>${v.stock}</p>
+                                <a
+                                  href="#"
+                                  className="btn border border-secondary rounded-pill px-3 text-primary"
+                                  onClick={(event) => handalproduct(event, v._id)}
+                                >
+                                  Add to cart
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </Link>
+                      </div>
+                    ))}
                     <div className="col-12">
                       <div className="pagination d-flex justify-content-center mt-5">
                         <a href="#" className="rounded">«</a>
@@ -309,7 +360,6 @@ function Shop(props) {
         </div>
       </div>
       {/* Fruits Shop End*/}</div>
-
   );
 }
 

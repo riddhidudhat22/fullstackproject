@@ -103,6 +103,7 @@ const adminlink = [
     { title: 'faselity', icon: <AddIcon />, to: '/admin/facility' },
     { title: 'coupon', icon: <AddIcon />, to: '/admin/coupon' },
     { title: 'contect', icon: <AddIcon />, to: '/admin/contect' },
+    { title: 'variant', icon: <AddIcon />, to: '/admin/variant' },
    
 ]
 

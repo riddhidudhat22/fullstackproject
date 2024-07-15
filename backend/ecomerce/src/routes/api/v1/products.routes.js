@@ -27,4 +27,33 @@ router.delete('/delete-product/:product_id',
     product.deleteproduct
 );
 
+router.get('/getroductdata-by-subcategorydata/:subcategori_id',
+    product.getproducttawith
+)
+
+
+router.get('/products/search/:name',
+    product.searchName
+)
+
+router.get('/list-category/:categori_id',
+    product.productsByCategory
+)
+
+router.get('/list-subcategory/:subcategori_id',
+    product.productsBySubcategory
+
+)
+
+router.get('/top-rated',
+    product.topRate
+)
+
+router.get( '/new-arrivals',
+    product.newArrivals
+)
+router.get('/count-categories',
+    product.countCategories
+)
+
 module.exports = router;

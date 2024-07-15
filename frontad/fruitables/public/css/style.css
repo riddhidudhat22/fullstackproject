@@ -555,3 +555,59 @@
     color: black;
 }
 
+.fruite-item {
+    position: relative;
+    border: 1px solid #ccc; /* Example border style */
+    border-radius: 10px; /* Rounded corners */
+    overflow: hidden; /* Ensures child elements respect border-radius */
+  
+    /* Optional: Adjust width and margin for responsiveness */
+    width: 100%; /* Adjust width as needed */
+    max-width: 300px; /* Example maximum width */
+    margin: 10px; /* Example margin for spacing between boxes */
+  }
+  
+  .fruite-img img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  
+  .text-white.bg-secondary {
+    background-color: #6c757d; /* Example secondary background color */
+    color: #fff; /* Text color */
+    padding: 5px 10px; /* Padding for the "Fruits" label */
+    border-radius: 5px; /* Rounded corners */
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    text-align: center;
+  }
+  
+  /* .p-4 {
+    padding: 1rem; 
+  } */
+  
+  .border.border-secondary {
+    border: 1px solid #6c757d; /* Example secondary border color */
+  }
+  
+  .rounded-bottom {
+    border-bottom-left-radius: 10px; /* Example rounded bottom corners */
+    border-bottom-right-radius: 10px; /* Example rounded bottom corners */
+  }
+  
+  .btn.border.border-secondary {
+    border: 1px solid #6c757d; /* Example border for button */
+    border-radius: 20px; /* Example button border radius */
+    padding: 8px 20px; /* Example button padding */
+    color: #007bff; /* Example button text color */
+    text-decoration: none; /* Remove underline */
+  }
+  
+  .btn.border.border-secondary:hover {
+    background-color: #6c757d; /* Example hover background color */
+    color: #fff; /* Example hover text color */
+    text-decoration: none; /* Remove underline on hover */
+  }
+  

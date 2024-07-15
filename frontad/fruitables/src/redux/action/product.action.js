@@ -6,7 +6,7 @@ const loadingproduct = () => ({ type: LOADING_PRODUCT });
 
 const errorproduct = (error) => ({ type: ERROR_PRODUCT, payload: error });
 
-export const getdata = () => async (dispatch) => {
+export const getdatapro = () => async (dispatch) => {
 
   try {
     dispatch(loadingproduct());

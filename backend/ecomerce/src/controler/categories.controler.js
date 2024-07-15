@@ -84,7 +84,7 @@ const deletecategories = async (req, res) => {
     try {
         const categori = await Categories.findByIdAndDelete(req.params.categori_id)
         console.log(categori);
-        
+
         if (!categori) {
             res.status(404).json({
                 success: false,
@@ -128,12 +128,161 @@ const udatecategories = async (req, res) => {
         })
     }
 }
+
+const activecategory = async (req, res) => {
+    const countcategori = await Categories.aggregate([
+        {
+            $match: {
+                "isActive": true
+            }
+
+        },
+        {
+            $count: 'countactivecategories'
+        }
+    ])
+    res.status(200).json({
+        success: true,
+        message: "countcategori get  succesfully",
+        data: countcategori
+    })
+    console.log(countcategori);
+}
+
+
+const highestnum = async (req, res) => {
+    const highestnumproduct = await Categories.aggregate([
+
+        {
+            $lookup: {
+                from: "products",
+                localField: "_id",
+                foreignField: "categori_id",
+                "as": "products"
+            }
+        },
+        {
+            $project: {
+                categoryName: "$name",
+                productCount: { "$size": "$products" }
+            }
+        },
+        {
+            $sort: {
+                "productCount": -1
+            }
+        },
+        {
+            $limit: 3
+        }
+
+    ]);
+    res.status(200).json({
+        success: true,
+        message: "highestnumproduct get  succesfully",
+        data: highestnumproduct
+    })
+    console.log(highestnumproduct);
+}
+
+const inactivecategory = async (req, res) => {
+
+    const countinactive = await Categories.aggregate([
+        {
+            $match: {
+                "isActive": false
+            }
+
+        },
+        {
+            $count: 'countinactivecategori'
+        }
+    ]);
+    res.status(200).json({
+        success: true,
+        message: "countinactive get  succesfully",
+        data: countinactive
+    })
+    console.log(countinactive);
+}
+
+
+const averagenuproduct = async (req, res) => {
+    const averagenuproduct = await Categories.aggregate([
+
+    ]);
+    console.log(averagenuproduct);
+}
+
+const countsubcategories = async (req, res) => {
+    const countsubcate = await Categories.aggregate([
+
+        {
+            $lookup: {
+                from: "subcategories",
+                localField: "_id",
+                foreignField: "categori_id",
+                as: "Subacategory"
+            }
+        },
+        {
+            $project: {
+                _id: 1,
+                category_name: "$name",
+                countsubcategories: "$Subacategory"
+            }
+        }
+
+    ]);
+    res.status(200).json({
+        success: true,
+        message: "countsubcate get  succesfully",
+        data: countsubcate
+    })
+    console.log(countsubcate);
+}
+
+const subcategorioncategori = async (req, res) => {
+    const retviecategoryonsubcate = await Categories.aggregate([
+
+        {
+            $lookup: {
+                from: "subcategories",
+                localField: "_id",
+                foreignField: "categori_id",
+                as: "subcategories"
+            }
+        },
+        {
+            $project: {
+                _id: 1,
+                category_name: "$name",
+                subcategories: "$subcategories"
+            }
+        }
+
+    ]);
+    res.status(200).json({
+        success: true,
+        message: "retviecategoryonsubcate get  succesfully",
+        data: retviecategoryonsubcate
+    })
+
+    console.log(retviecategoryonsubcate);
+}
+
 module.exports = {
     listcategories,
     getcategories,
     addcategories,
     deletecategories,
-    udatecategories
+    udatecategories,
+    activecategory,
+    inactivecategory,
+    highestnum,
+    averagenuproduct,
+    countsubcategories,
+    subcategorioncategori
 }
 
 

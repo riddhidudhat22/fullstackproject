@@ -5,7 +5,7 @@ import { ThemeContext } from '../../../context/Themcontext';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import { subcategoriget } from '../../../redux/reducer/slice/subcategori.slice';
-import { getdata } from '../../../redux/action/product.action';
+import { getdata, getdatapro } from '../../../redux/action/product.action';
 import { getcategori } from '../../../redux/action/categori.action';
 import { Box, Button, IconButton, Menu, MenuItem } from '@mui/material';
 
@@ -43,7 +43,7 @@ function Header(props) {
   useEffect(() => {
     dispatch(getcategori());
     dispatch(subcategoriget());
-    dispatch(getdata());
+    dispatch(getdatapro());
   }, [dispatch]);
 
 
@@ -142,7 +142,9 @@ function Header(props) {
       </div>
       {/* Modal Search End */}
       <br /><br /><br /><br /><br /><br />
+
       <div>
+
         <Box sx={{ display: 'flex', padding: 2 }}>
           {categories.categori.map(category => (
             <Box key={category.id} sx={{ margin: '0 10px' }}>
@@ -179,21 +181,67 @@ function Header(props) {
         </Box>
 
         {selectedCategory && selectedSubcategory && (
-          <Box sx={{ margin: '20px 10px' }}>
-            <h3>{selectedSubcategory.name}</h3>
-            {product
-              .filter(v => v.subcategory_id === selectedSubcategory._id)
-              .map(v => (
-                <Box key={v._id} sx={{ margin: '10px 0' }}>
-                  <h4>{v.name}</h4>
-                </Box>
-              ))}
-
-           
-          </Box>
+          <>
+            <Box sx={{ margin: '20px 10px' }}>
+              <h3>{selectedSubcategory.name}</h3>
+              {product.product
+                .filter(v => v.subcategori_id === selectedSubcategory._id)
+                .map(v => (
+                  <Box key={v._id} sx={{ margin: '10px 0' }}>
+                    {/* <div className="container-fluid fruite py-5">
+                      <div className="container py-5"> */}
+                        <div className="tab-class text-center"></div>
+                        <div className="tab-content">
+                          <div id="tab-1" className="tab-pane fade show p-0 active">
+                            <div className="row g-4">
+                              <div className="col-md-6 col-lg-4 col-xl-3">
+                                <div className="rounded position-relative fruite-item">
+                                  <div className="fruite-img">
+                                    {v.image && <img
+                                      src={v.image.url}
+                                      className="img-fluid w-100 rounded-top"
+                                      alt=""
+                                    />}
+                                  </div>
+                                  <div
+                                    className="text-white bg-secondary px-3 py-1 rounded position-absolute"
+                                    style={{ top: 10, left: 10, textAlign: "center" }}
+                                  >
+                                    Fruits
+                                  </div>
+                                  <div className="p-4 border border-secondary border-top-0 rounded-bottom">
+                                    <h4>{v.name}</h4>
+                                    <p>{v.description}</p>
+                                    <div className="d-flex justify-content-between flex-lg-wrap">
+                                      <p className="text-dark fs-5 fw-bold mb-0">
+                                        $ {v.price} / kg
+                                      </p>
+                                      <p>{v.stock} stock</p>
+                                      {/* <a
+                href="#"
+                className="btn border border-secondary rounded-pill px-3 text-primary"
+                onClick={(event) => handalproduct(event, v._id)}
+              >
+                Add to cart
+              </a> */}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      {/* </div>
+                    </div> */}
+                  </Box>
+                ))}
+            </Box>
+          </>
         )}
       </div>
     </div>
+
+
   );
 }
 

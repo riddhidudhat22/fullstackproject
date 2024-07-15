@@ -13,6 +13,7 @@ import Footer from '../user/component/Footer/Footer';
 import PrivateRoute from './PrivateRoute';
 import Review from '../user/container/Review/Review';
 import { ThemeContext } from '../context/Themcontext';
+import Category from '../admin/container/Category/Category';
 
 
 function UserRoute(props) {
@@ -25,7 +26,7 @@ function UserRoute(props) {
         <Route exact path="/" element={<Home />} />
         <Route element={<PrivateRoute />}>
           <Route exact path="/shop" element={<Shop />} />
-          
+          {/* <Route exact path='/shop/:id' element={<Shop />} /> */}
         </Route>
         <Route exact path="/shop/:id" element={<Shopdetail />} />
         <Route exact path="/review" element={<Review />} />
@@ -35,6 +36,7 @@ function UserRoute(props) {
         <Route exact path="/testimonial" element={<Testimonial />} />
         <Route exact path="/error" element={<Error />} />
         <Route exact path="/contact" element={<Contact />} />
+        <Route exact path="/Category" element={<Category />} />
       </Routes>
       <Footer />
       </div>
