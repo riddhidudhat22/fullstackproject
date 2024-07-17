@@ -104,6 +104,7 @@ const adminlink = [
     { title: 'coupon', icon: <AddIcon />, to: '/admin/coupon' },
     { title: 'contect', icon: <AddIcon />, to: '/admin/contect' },
     { title: 'variant', icon: <AddIcon />, to: '/admin/variant' },
+    { title: 'salspeople', icon: <AddIcon />, to: '/admin/salspeople' },
    
 ]
 
