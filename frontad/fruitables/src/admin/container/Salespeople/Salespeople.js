@@ -14,11 +14,18 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useDispatch, useSelector } from 'react-redux';
+import { deletesalepeople, editeselespeople, getselsepeople, habdleadd } from '../../../redux/action/salespeople.action';
+import { styled } from '@mui/material/styles';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch, { SwitchProps } from '@mui/material/Switch';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 
 function Salespeople(props) {
 
     const [open, setOpen] = React.useState(false);
-    const [update, setupdate] = useState(null)
+    const [update, setupdate] = useState(null);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -27,152 +34,203 @@ function Salespeople(props) {
     const handleClose = () => {
         setOpen(false);
         formik.resetForm();
-        setupdate(null)
+        setupdate(null);
     };
+
     const dispatch = useDispatch();
 
+    const salespeoples = useSelector(state => state.salespeple);
+    console.log(salespeoples);
+
     let ContactSchema = object({
-        sname: string().required(),
-        city: string().required(),
-        commition: string().required()
+        SNAME: string().required(),
+        CITY: string().required(),
+        COMM: string().required(),
+        // isActive:bo
     });
+
     const formik = useFormik({
         initialValues: {
-            sname: '',
-            city: '',
-            commition:''
+            SNAME: '',
+            CITY: '',
+            COMM: '',
+            // isActive:''
         },
         validationSchema: ContactSchema,
         onSubmit: (values, { resetForm }) => {
-
             if (update) {
-                // dispatch(editecategori(values))
+                dispatch(editeselespeople(values));
             } else {
-                // dispatch(handleAdd(values));
+                dispatch(habdleadd(values));
             }
 
-            resetForm()
+            resetForm();
             handleClose();
         }
     });
 
     const columns = [
-        { field: 'sname', headerName: 'Name', width: 130 },
-        { field: 'city', headerName: 'CITY', width: 130 },
-        { field: 'commition', headerName: 'COMM', width: 130 },
+        { field: 'SNAME', headerName: 'Name', width: 130 },
+        { field: 'CITY', headerName: 'CITY', width: 130 },
+        { field: 'COMM', headerName: 'COMM', width: 130 },
+        { field: 'isActive', headerName: 'isActive', width: 130 },
         {
             field: 'Action',
             headerName: 'Action',
             width: 130,
             renderCell: (params) => (
                 <>
-                    <IconButton aria-label="delete" onClick={() => handleedit(params.row)}>
+                    <IconButton aria-label="edit" onClick={() => handleedit(params.row)}>
                         <EditIcon />
                     </IconButton>
-                    <IconButton aria-label="delete" onClick={() => handledeletee(params.row._id)}>
+                    <IconButton aria-label="delete" onClick={() => handledeletee(params.row.SNUM)}>
                         <DeleteIcon />
                     </IconButton>
                 </>
-
             )
         },
-
     ];
+
     const { handleSubmit, handleBlur, handleChange, touched, errors, values, setValues } = formik;
 
-
+    useEffect(() => {
+        dispatch(getselsepeople());
+    }, [dispatch]);
 
     const handleedit = (data) => {
-        setValues(data)
+        setValues(data);
         setOpen(true);
-        setupdate(data._id)
+        setupdate(data.SNUM);
+    };
 
-    }
+    const handledeletee = (SNUM) => {
+        dispatch(deletesalepeople(SNUM));
+    };
 
+    // const AntSwitch = styled(Switch)(({ theme }) => ({
+    //     width: 28,
+    //     height: 16,
+    //     padding: 0,
+    //     display: 'flex',
+    //     '&:active': {
+    //         '& .MuiSwitch-thumb': {
+    //             width: 15,
+    //         },
+    //         '& .MuiSwitch-switchBase.Mui-checked': {
+    //             transform: 'translateX(9px)',
+    //         },
+    //     },
+    //     '& .MuiSwitch-switchBase': {
+    //         padding: 2,
+    //         '&.Mui-checked': {
+    //             transform: 'translateX(12px)',
+    //             color: '#fff',
+    //             '& + .MuiSwitch-track': {
+    //                 opacity: 1,
+    //                 backgroundColor: theme.palette.mode === 'dark' ? '#177ddc' : '#1890ff',
+    //             },
+    //         },
+    //     },
+    //     '& .MuiSwitch-thumb': {
+    //         boxShadow: '0 2px 4px 0 rgb(0 35 11 / 20%)',
+    //         width: 12,
+    //         height: 12,
+    //         borderRadius: 6,
+    //         transition: theme.transitions.create(['width'], {
+    //             duration: 200,
+    //         }),
+    //     },
+    //     '& .MuiSwitch-track': {
+    //         borderRadius: 16 / 2,
+    //         opacity: 1,
+    //         backgroundColor:
+    //             theme.palette.mode === 'dark' ? 'rgba(255,255,255,.35)' : 'rgba(0,0,0,.25)',
+    //         boxSizing: 'border-box',
+    //     },
+    // }));
 
-    const handledeletee = async (_id) => {
-
-        // dispatch(handledelete(_id))
-    }
     return (
         <>
-
             <div style={{ textAlign: 'start', marginRight: '50px' }}>
                 <React.Fragment>
                     <Button variant="outlined" onClick={handleClickOpen}>
                         Add Salespeople
                     </Button><br /><br />
                     <Dialog open={open} onClose={handleClose}>
-                        <DialogTitle>Add The Salespeople</DialogTitle>
+                        <DialogTitle>Salespeople</DialogTitle>
                         <form onSubmit={handleSubmit}>
                             <DialogContent>
                                 <TextField
                                     margin="dense"
-                                    id="name"
-                                    name="name"
-                                    label="sname"
+                                    id="SNAME"
+                                    name="SNAME"
+                                    label="SNAME"
                                     type="text"
                                     fullWidth
                                     variant="standard"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    value={values.sname}
-                                    error={errors.sname && touched.sname ? true : false}
-                                    helperText={errors.sname && errors.sname ? errors.sname : ''}
+                                    value={values.SNAME}
+                                    error={errors.SNAME && touched.SNAME}
+                                    helperText={errors.SNAME && touched.SNAME ? errors.SNAME : ''}
                                 />
-
                                 <TextField
                                     margin="dense"
-                                    id="city"
-                                    name="city"
-                                    label="city"
+                                    id="CITY"
+                                    name="CITY"
+                                    label="CITY"
                                     type="text"
                                     fullWidth
                                     variant="standard"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    value={values.city}
-                                    error={errors.city && touched.city ? true : false}
-                                    helperText={errors.city && errors.city ? errors.city : ''}
+                                    value={values.CITY}
+                                    error={errors.CITY && touched.CITY}
+                                    helperText={errors.CITY && touched.CITY ? errors.CITY : ''}
                                 />
-
                                 <TextField
                                     margin="dense"
-                                    id="commition"
-                                    name="commition"
-                                    label="commition"
+                                    id="COMM"
+                                    name="COMM"
+                                    label="COMM"
                                     type="text"
                                     fullWidth
                                     variant="standard"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    value={values.commition}
-                                    error={errors.commition && touched.commition ? true : false}
-                                    helperText={errors.commition && errors.commition ? errors.commition : ''}
+                                    value={values.COMM}
+                                    error={errors.COMM && touched.COMM}
+                                    helperText={errors.COMM && touched.COMM ? errors.COMM : ''}
                                 />
-                                <DialogActions>
-                                    <Button onClick={handleClose}>Cancel</Button>
-                                    <Button type="submit">{update ? 'update' : 'Add'}</Button>
-
-                                </DialogActions>
+                                {/* <FormGroup>
+                                    <Stack direction="row" spacing={1} alignItems="center">
+                                        <Typography>DisActive</Typography>
+                                        <AntSwitch defaultChecked inputProps={{ 'aria-label': 'ant design' }} />
+                                        <Typography>isActive</Typography>
+                                    </Stack>
+                                </FormGroup> */}
                             </DialogContent>
+                            <DialogActions>
+                                <Button onClick={handleClose}>Cancel</Button>
+                                <Button type="submit">{update ? 'Update' : 'Add'}</Button>
+                            </DialogActions>
                         </form>
                     </Dialog>
                 </React.Fragment>
             </div>
             <div style={{ height: 400, width: '100%' }}>
-                {/* <DataGrid
-            rows={categori.categori}
-            columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: { page: 0, pageSize: 5 }
-              }
-            }}
-            getRowId={row => row._id}
-            pageSizeOptions={[5, 10]}
-            checkboxSelection
-          /> */}
+                <DataGrid
+                    rows={salespeoples.salespeple}
+                    columns={columns}
+                    initialState={{
+                        pagination: {
+                            paginationModel: { page: 0, pageSize: 5 }
+                        }
+                    }}
+                    getRowId={row => row.SNUM}
+                    pageSizeOptions={[5, 10]}
+                    checkboxSelection
+                />
             </div>
         </>
     );

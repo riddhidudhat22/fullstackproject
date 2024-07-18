@@ -15,14 +15,14 @@ const salepeoplemodel = async () => {
 
 
 
-const addsalespeoplemodel = async (SNAME, CITY, COMM) => {
+const addsalespeoplemodel = async (SNAME, CITY, COMM,isActive) => {
     try {
         const [result] = await pool.execute(
-            "INSERT INTO salespeople (SNAME, CITY, COMM) VALUES (?, ?, ?)",
-            [SNAME, CITY, COMM]
+            "INSERT INTO salespeople (SNAME, CITY, COMM,isActive) VALUES (?,?, ?, ?)",
+            [SNAME, CITY, COMM,isActive]
         );
         console.log(result);
-        return ({ SNAME, CITY, COMM, SNUM: result.insertId })
+        return ({ SNAME, CITY, COMM,isActive, SNUM: result.insertId })
 
     } catch (error) {
         console.error(error);

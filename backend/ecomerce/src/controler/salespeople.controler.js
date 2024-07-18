@@ -23,9 +23,9 @@ const listselspeople = async (req, res) => {
 
 const addselspeople = async (req, res) => {
     try {
-        const { SNAME, CITY, COMM } = req.body;
+        const { SNAME, CITY, COMM,isActive } = req.body;
 
-        const insert = await salespeople.addsalespeoplemodel(SNAME, CITY, COMM)
+        const insert = await salespeople.addsalespeoplemodel(SNAME, CITY, COMM,isActive)
         res.status(200).json({
             success: true,
             data: insert,
