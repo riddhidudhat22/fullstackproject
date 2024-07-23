@@ -64,9 +64,9 @@ const deleteselspeople = async (req, res) => {
 const updateselpeople = async (req, res) => {
     try {
         const { SNUM } = req.params;
-        const { SNAME, CITY, COMM } = req.body;
+        const { SNAME, CITY, COMM ,isActive} = req.body;
 
-        const updatedata = await salespeople.updatesalespeople(SNUM, SNAME, CITY, COMM);
+        const updatedata = await salespeople.updatesalespeople(SNUM, SNAME, CITY, COMM,isActive);
         
         res.status(200).json({
             success: true,

@@ -5,7 +5,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { object, string } from 'yup';
+import { date, object, string } from 'yup';
 import { useFormik } from 'formik';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -15,12 +15,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useDispatch, useSelector } from 'react-redux';
 import { deletesalepeople, editeselespeople, getselsepeople, habdleadd } from '../../../redux/action/salespeople.action';
-import { styled } from '@mui/material/styles';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch, { SwitchProps } from '@mui/material/Switch';
-import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
+import { FormGroup } from '@mui/material';
+import Switch from '@mui/material/Switch';
+import Stack from '@mui/material/Stack';
 
 function Salespeople(props) {
 
@@ -46,7 +45,8 @@ function Salespeople(props) {
         SNAME: string().required(),
         CITY: string().required(),
         COMM: string().required(),
-        // isActive:bo
+        isActive: string().required(),
+
     });
 
     const formik = useFormik({
@@ -54,10 +54,12 @@ function Salespeople(props) {
             SNAME: '',
             CITY: '',
             COMM: '',
-            // isActive:''
+            isActive: 1,
+
         },
         validationSchema: ContactSchema,
         onSubmit: (values, { resetForm }) => {
+
             if (update) {
                 dispatch(editeselespeople(values));
             } else {
@@ -73,7 +75,14 @@ function Salespeople(props) {
         { field: 'SNAME', headerName: 'Name', width: 130 },
         { field: 'CITY', headerName: 'CITY', width: 130 },
         { field: 'COMM', headerName: 'COMM', width: 130 },
-        { field: 'isActive', headerName: 'isActive', width: 130 },
+        { field: 'COMM', headerName: 'COMM', width: 130 },
+        {
+            field: 'isActive', headerName: 'Status', width: 80,
+            renderCell: (params) => (
+                params.value === 1 ? "Active" : "Inactive"
+            )
+        },
+
         {
             field: 'Action',
             headerName: 'Action',
@@ -107,47 +116,49 @@ function Salespeople(props) {
         dispatch(deletesalepeople(SNUM));
     };
 
-    // const AntSwitch = styled(Switch)(({ theme }) => ({
-    //     width: 28,
-    //     height: 16,
-    //     padding: 0,
-    //     display: 'flex',
-    //     '&:active': {
-    //         '& .MuiSwitch-thumb': {
-    //             width: 15,
-    //         },
-    //         '& .MuiSwitch-switchBase.Mui-checked': {
-    //             transform: 'translateX(9px)',
-    //         },
-    //     },
-    //     '& .MuiSwitch-switchBase': {
-    //         padding: 2,
-    //         '&.Mui-checked': {
-    //             transform: 'translateX(12px)',
-    //             color: '#fff',
-    //             '& + .MuiSwitch-track': {
-    //                 opacity: 1,
-    //                 backgroundColor: theme.palette.mode === 'dark' ? '#177ddc' : '#1890ff',
-    //             },
-    //         },
-    //     },
-    //     '& .MuiSwitch-thumb': {
-    //         boxShadow: '0 2px 4px 0 rgb(0 35 11 / 20%)',
-    //         width: 12,
-    //         height: 12,
-    //         borderRadius: 6,
-    //         transition: theme.transitions.create(['width'], {
-    //             duration: 200,
-    //         }),
-    //     },
-    //     '& .MuiSwitch-track': {
-    //         borderRadius: 16 / 2,
-    //         opacity: 1,
-    //         backgroundColor:
-    //             theme.palette.mode === 'dark' ? 'rgba(255,255,255,.35)' : 'rgba(0,0,0,.25)',
-    //         boxSizing: 'border-box',
-    //     },
-    // }));
+
+    const AntSwitch = styled(Switch)(({ theme }) => ({
+        width: 28,
+        height: 16,
+        padding: 0,
+        display: 'flex',
+        '&:active': {
+            '& .MuiSwitch-thumb': {
+                width: 15,
+            },
+            '& .MuiSwitch-switchBase.Mui-checked': {
+                transform: 'translateX(9px)',
+            },
+        },
+        '& .MuiSwitch-switchBase': {
+            padding: 2,
+            '&.Mui-checked': {
+                transform: 'translateX(12px)',
+                color: '#fff',
+                '& + .MuiSwitch-track': {
+                    opacity: 1,
+                    backgroundColor: theme.palette.mode === 'dark' ? '#177ddc' : '#1890ff',
+                },
+            },
+        },
+        '& .MuiSwitch-thumb': {
+            boxShadow: '0 2px 4px 0 rgb(0 35 11 / 20%)',
+            width: 12,
+            height: 12,
+            borderRadius: 6,
+            transition: theme.transitions.create(['width'], {
+                duration: 200,
+            }),
+        },
+        '& .MuiSwitch-track': {
+            borderRadius: 16 / 2,
+            opacity: 1,
+            backgroundColor:
+                theme.palette.mode === 'dark' ? 'rgba(255,255,255,.35)' : 'rgba(0,0,0,.25)',
+            boxSizing: 'border-box',
+        },
+    }));
+
 
     return (
         <>
@@ -202,13 +213,17 @@ function Salespeople(props) {
                                     error={errors.COMM && touched.COMM}
                                     helperText={errors.COMM && touched.COMM ? errors.COMM : ''}
                                 />
-                                {/* <FormGroup>
+
+                                <FormGroup>
                                     <Stack direction="row" spacing={1} alignItems="center">
-                                        <Typography>DisActive</Typography>
-                                        <AntSwitch defaultChecked inputProps={{ 'aria-label': 'ant design' }} />
-                                        <Typography>isActive</Typography>
+                                        <Typography>Inactive</Typography>
+                                        <AntSwitch defaultChecked
+                                            checked={values.isActive === 1}
+                                            onChange={() => formik.setFieldValue('isActive', values.isActive === 1 ? 0 : 1)}
+                                            inputProps={{ 'aria-label': 'ant design' }} />
+                                        <Typography>Active</Typography>
                                     </Stack>
-                                </FormGroup> */}
+                                </FormGroup>
                             </DialogContent>
                             <DialogActions>
                                 <Button onClick={handleClose}>Cancel</Button>

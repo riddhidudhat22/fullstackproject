@@ -26,7 +26,7 @@ import CategoryIcon from '@mui/icons-material/Category';
 import AddIcon from '@mui/icons-material/Add';
 import ExposureIcon from '@mui/icons-material/Exposure';
 import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
-
+import DiscountIcon from '@mui/icons-material/Discount';
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -101,7 +101,7 @@ const adminlink = [
     { title: 'review', icon: <RateReviewIcon />, to: '/admin/review' },  
     { title: 'counter', icon: <ExposureIcon />, to: '/admin/counter' },
     { title: 'faselity', icon: <AddIcon />, to: '/admin/facility' },
-    { title: 'coupon', icon: <AddIcon />, to: '/admin/coupon' },
+    { title: 'coupon', icon: <DiscountIcon />, to: '/admin/coupon' },
     { title: 'contect', icon: <AddIcon />, to: '/admin/contect' },
     { title: 'variant', icon: <AddIcon />, to: '/admin/variant' },
     { title: 'salspeople', icon: <AddIcon />, to: '/admin/salspeople' },

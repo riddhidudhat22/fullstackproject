@@ -4,34 +4,32 @@ const usersScheema = new mongoose.Schema(
     {
         name: {
             type: String,
-            require: true,
+            // require: true,
+            trim: true,
+          
+            lowercase: true
+        },
+       
+        email: {
+            type: String,
+            // require: true,
             trim: true,
             unique: true,
             lowercase: true
         },
-        Address: {
-            type: String,
-            require: true
-        },
-        phone_no: {
-            type: Number,
-            require: true
-        },
-        email: {
-            type: String,
-            require: true
-        },
         password: {
             type: String,
-            require: true
+            // require: true
         },
         role: {
             type: String,
-            require: true
+            // require: true
         },
-        // refreshtoken: {
-
-        // },
+        refreshtoken:{
+            type: String,
+            trim: true,
+        },
+       
         isActive: {
             type: Boolean,
             default: true,

@@ -46,11 +46,11 @@ const deleteselsepeople = async (SNUM) => {
 
 
 
-const updatesalespeople = async (SNUM, SNAME, CITY, COMM) => {
+const updatesalespeople = async (SNUM, SNAME, CITY, COMM,isActive) => {
     try {
         const [result] = await pool.execute(
-            "UPDATE salespeople SET SNAME = ?, CITY = ?, COMM = ? WHERE SNUM = ?",
-            [SNAME, CITY, COMM, SNUM]
+            "UPDATE salespeople SET SNAME = ?, CITY = ?, COMM = ? ,isActive=? WHERE SNUM = ?",
+            [SNAME, CITY, COMM, isActive,SNUM]
         );
         console.log(result);
         return result;
