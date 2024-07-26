@@ -16,6 +16,10 @@ router.post('/loginusers',
 router.post('/genrateNewToken',
     userscontroler.newtoken
 );
+
+router.post('/logout',
+    userscontroler.logout
+);
 module.exports = router;
 
 

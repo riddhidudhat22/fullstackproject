@@ -2,6 +2,7 @@
 const express = require('express');
 const { categoriescontroler } = require('../../../controler');
 const upload = require('../../../middleware/upload');
+const { auth } = require('../../../middleware/auth');
 
 const router = express.Router()
 
@@ -10,6 +11,7 @@ router.get('/get-category/:categori_id',
 );
 
 router.get('/list-category',
+    auth(["admin","employe"]),
     categoriescontroler.listcategories
 );
 

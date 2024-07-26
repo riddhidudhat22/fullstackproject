@@ -23,6 +23,7 @@ const Tokenaccess = async (_id) => {
         { expiresIn: "2 days" });
 
     user.refreshtoken = refreshtoken
+
     await user.save({ validateBeforeSave: false })
     return { accessToken, refreshtoken }
 
@@ -41,7 +42,7 @@ const ragister = async (req, res) => {
         console.log(user);
 
         if (user) {
-           return res.status(409).json({
+            return res.status(409).json({
                 success: false,
                 message: "user alredy exist"
             })
@@ -123,19 +124,19 @@ const login = async (req, res) => {
 
         const user1 = await Users.findById({ _id: user._id }).select('-password -refreshtoken');
 
-        const option={
-            httpOnly:true,
-            sequre:true
+        const option = {
+            httpOnly: true,
+            sequre: true
         }
 
         res.status(200)
-            .cookie("AccessToken",accessToken,option)
-            .cookie("refreshtoken",refreshtoken,option)
+            .cookie("AccessToken", accessToken, option)
+            .cookie("refreshtoken", refreshtoken, option)
             .json({
                 success: true,
                 message: "data fetch successfull",
-                data:{
-                    user:{...user1.toObject(),accessToken}
+                data: {
+                    user: { ...user1.toObject(), accessToken }
                 }
             })
     } catch (error) {
@@ -143,17 +144,92 @@ const login = async (req, res) => {
     }
 }
 
-const newtoken=async(req,res)=>{
-// console.log(req.body);
-
+const newtoken = async (req, res) => {
     try {
-        console.log("body++",req.cookie.refreshtoken);
+        console.log(req.cookies.refreshtoken);
+        const tokendata = await jwt.verify(req.cookies.refreshtoken, 'jdgf%jhsvg^jhs')
+        console.log(tokendata);
+
+        if (!tokendata) {
+            return res.status(401).json({
+                success: false,
+                message: "invalid refresh token"
+            })
+        }
+        const user = await Users.findById(tokendata._id)
+        console.log(user, "ssdd");
+
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: "user not get"
+            })
+        }
+        const { accessToken, refreshtoken } = await Tokenaccess(user._id)
+        console.log(accessToken, refreshtoken);
+
+        if (req.cookies.refreshtoken != user.toObject().refreshtoken) {
+            return res.status(401).json({
+                success: false,
+                message: "invalid token"
+            })
+        }
+
+
+        const option = {
+            httpOnly: true,
+            sequre: true
+        }
+        res.status(200)
+            .cookie("AccessToken", accessToken, option)
+            .cookie("refreshtoken", refreshtoken, option)
+            .json({
+                success: true,
+                message: "data fetch successfull",
+                data: {
+                    user: { accessToken }
+                }
+            })
     } catch (error) {
-     console.log(error);   
+        console.log(error);
+    }
+}
+
+
+const logout = async (req, res) => {
+    try {
+        console.log(req.body._id);
+
+        const logout =await Users.findByIdAndUpdate(
+            req.body._id,
+            {
+                 $unset:{
+                    refreshtoken:1,
+                 }
+            },
+            {
+                new: true,
+            }
+
+        )
+        if (!logout) {
+            return res.status(400).json({
+                success: false,
+                message: "user not login"
+            })
+        }
+
+        res.status(200).json({
+            success: false,
+            message: "user logout "
+        })
+    } catch (error) {
+        console.log(error);
     }
 }
 module.exports = {
     ragister,
     login,
-    newtoken
+    newtoken,
+    logout
 }
