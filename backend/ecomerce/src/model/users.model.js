@@ -29,7 +29,9 @@ const usersScheema = new mongoose.Schema(
             type: String,
             trim: true,
         },
-       
+        googleId:{
+            type: String,
+        },
         isActive: {
             type: Boolean,
             default: true,

@@ -1,3 +1,4 @@
+
 const Users = require("../model/users.model");
 const bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
@@ -152,8 +153,42 @@ const newtoken=async(req,res)=>{
      console.log(error);   
     }
 }
+
+const logout=async(req,res)=>{
+    try {
+        const user=await Users.findByIdAndUpdate(
+            req.body._id,
+            {
+                $unset:{
+                    refreshtoken:1
+                }
+            },
+            {
+                new:true
+            }
+        )
+        if (!user) {
+            return res.status(400).json({
+                success: false,
+                message: "user not login"
+            })
+        }
+        console.log(user);
+        res.status(200).json({
+            success: true,
+            message: "logout successfull",
+
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message:"logout fail"
+        })
+    }
+}
 module.exports = {
     ragister,
     login,
-    newtoken
+    newtoken,
+    logout
 }
