@@ -34,4 +34,19 @@ router.get('/google/callback',
         res.send('<h1>okkkk</h1>')
     });
 
+    router.get('/facebooklogin',
+        passport.authenticate('facebook'));
+
+    router.get('/facebook/callback',
+        passport.authenticate('facebook', { failureRedirect: '/login' }),
+        function (req, res) {
+            console.log("Login success.....");
+            res.send('<h1>Facebook Login successful</h1>');
+        });
+
+
+     
+          
 module.exports = router;
+
+// http://localhost:8000/api/v1/users/facebooklogin
