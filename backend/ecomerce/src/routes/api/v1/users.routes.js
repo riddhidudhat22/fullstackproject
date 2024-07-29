@@ -21,7 +21,7 @@ router.post('/logout',
     userscontroler.logout
 );
 
-router.get('/googlelogin',
+router.get('/   ',
     passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 

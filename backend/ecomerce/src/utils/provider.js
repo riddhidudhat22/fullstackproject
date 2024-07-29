@@ -12,7 +12,7 @@ const googleProvider = async () => {
         callbackURL: "http://localhost:8000/api/v1/users/google/callback"
     },
         async function (accessToken, refreshToken, profile, cb) {
-            console.log(profile);
+            console.log("zdf",profile);
             try {
                 let user = await Users.findOne({ googleId: profile.id });
                 console.log(user);
