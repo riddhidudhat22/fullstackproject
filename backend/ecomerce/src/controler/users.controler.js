@@ -2,6 +2,7 @@
 const Users = require("../model/users.model");
 const bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
+const sendmailer = require("../utils/nodemailers");
 
 const Tokenaccess = async (_id) => {
     const user = await Users.findById(_id);
@@ -78,8 +79,8 @@ const ragister = async (req, res) => {
                 message: "internal server error" + error.message
             })
         }
-
-        res.status(201).json({
+        sendmailer()
+        res.status(200).json({
             success: true,
             message: "ragister succesfully",
             data: user1
