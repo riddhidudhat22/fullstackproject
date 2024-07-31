@@ -26,6 +26,12 @@ const sendmailer = () => {
         filename: 'PDF',
         path: 'E:/social media.pdf'
       },
+
+      {   // file on disk as an attachment   
+        filename: 'PDF',
+        path: 'E:/fullstack project/backend/ecomerce/bill1.pdf'
+        
+      },
     ]
   }
 

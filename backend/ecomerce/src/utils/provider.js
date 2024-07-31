@@ -12,7 +12,7 @@ const googleProvider = async () => {
         callbackURL: "http://localhost:8000/api/v1/users/google/callback"
     },
         async function (accessToken, refreshToken, profile, cb) {
-            console.log("zdf",profile);
+            console.log("zdf", profile);
             try {
                 let user = await Users.findOne({ googleId: profile.id });
                 console.log(user);
@@ -36,8 +36,8 @@ const googleProvider = async () => {
     });
 
     passport.deserializeUser(async function (id, done) {
-    //   const user = await Users.findOne({ _id: id })
-    
+        //   const user = await Users.findOne({ _id: id })
+
         try {
             const user = await Users.findById(id);
             done(null, user);
@@ -51,8 +51,8 @@ const fecebookprovider = async () => {
     passport.use(new FacebookStrategy({
         clientID: "",
         clientSecret: "",
-        callbackURL: "http://localhost:8000/api/v1/users/facebook/callback", 
-        profileFields: ['id','displayName', 'emails'] 
+        callbackURL: "http://localhost:8000/api/v1/users/facebook/callback",
+        profileFields: ['id', 'displayName', 'emails']
     },
         async function (accessToken, refreshToken, profile, cb) {
             try {
@@ -61,7 +61,7 @@ const fecebookprovider = async () => {
                 if (!user) {
                     user = await Users.create({
                         name: profile.displayName,
-                        email : profile.emails[0].value,
+                        email: profile.emails[0].value,
                         facebookId: profile.id,
                         role: 'user'
                     });

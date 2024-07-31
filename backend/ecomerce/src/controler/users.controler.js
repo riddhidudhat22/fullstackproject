@@ -3,6 +3,9 @@ const Users = require("../model/users.model");
 const bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 const sendmailer = require("../utils/nodemailers");
+const createpdf = require("../utils/pdfmake");
+const pdfcreate = require("../utils/pdfmake");
+const exportpdfmake = require("../utils/pdfmake");
 
 const Tokenaccess = async (_id) => {
     const user = await Users.findById(_id);
@@ -68,9 +71,6 @@ const ragister = async (req, res) => {
             })
         }
 
-
-
-
         const user1 = await Users.findById({ _id: dataf._id }).select('-password');
 
         if (!user1) {
@@ -80,6 +80,7 @@ const ragister = async (req, res) => {
             })
         }
         sendmailer()
+        exportpdfmake()
         res.status(200).json({
             success: true,
             message: "ragister succesfully",
