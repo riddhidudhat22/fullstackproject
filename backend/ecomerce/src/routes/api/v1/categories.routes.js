@@ -8,8 +8,8 @@ const { categorivalidation } = require('../../../validation');
 
 const router = express.Router()
 
-router.get('/get-category/:categori_id',
-    // veryfeotp,
+router.get('/get-category',
+    validation(categorivalidation.getcategory),
     categoriescontroler.getcategories
 );
 
@@ -25,10 +25,12 @@ router.post('/add-category',
 );
 
 router.put('/update-category/:categori_id',
+    validation(categorivalidation.updatecategory),
     categoriescontroler.udatecategories
 );
 
 router.delete('/delete-category/:categori_id',
+    validation(categorivalidation.deletecategory),
     categoriescontroler.deletecategories
 );
 

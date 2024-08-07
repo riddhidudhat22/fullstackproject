@@ -16,7 +16,7 @@ const validation = (schema) => (req, res, next) => {
 
 
     if (error) {
-        const errormsg = error.details.map((v) => v.message).Join(", ")
+        const errormsg = error.details.map((v) => v.message).join(", ")
         console.log(errormsg);
         return next(new Error("validation Error.."+errormsg))
    

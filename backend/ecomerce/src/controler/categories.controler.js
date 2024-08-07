@@ -2,23 +2,39 @@
 const Categories = require("../model/categories.model");
 
 const listcategories = async (req, res) => {
-    // console.log("listcategories");
-
+    console.log("listcategories", req.query.page, req.query.pageSize);
+    let page = parseInt(req.query.page)
+    let pagesize = parseInt(req.query.pageSize)
     try {
+     
+        if (page <= 0 || pagesize <= 0) {
+            return res.status(400).send({
+                success: false,
+                message: 'page and pagesize lessthen zero.'
+            })
+        }
+
         const categories = await Categories.find();
 
-
         if (!categories || categories.length === 0) {
-            res.status(404).send({
+            return res.status(404).send({
                 success: false,
                 message: 'caregorie not found.'
             })
         }
+        let startindex = 0, endindex = 0, pagination = [];
 
-        res.status(200).json({
+        if (page > 0 || pagesize > 0) {
+            startindex = (page - 1) * pagesize;  //2-1*3=3
+            endindex = startindex + pagesize;   //3+3=6
+            pagination = categories.slice(startindex, endindex)
+
+        }
+        return res.status(200).json({
             success: true,
+            totaldata: categories.length,
             message: 'categories fetch susscss',
-            data: categories
+            data: pagination
         })
 
 
@@ -56,7 +72,7 @@ const getcategories = async (req, res) => {
 }
 
 const addcategories = async (req, res) => {
-    console.log("sdfdfd",req.body);
+    console.log("sdfdfd", req.body);
     // try {
     //     const category = await Categories.create(req.body);
     //     console.log(category);

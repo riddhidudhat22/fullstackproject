@@ -1,18 +1,40 @@
 const Joi =require("joi")
 
+
+const getcategory={
+    query:Joi.object().keys({ 
+        cat_id:Joi.string().required()
+    })
+}
 const createcategory={
     body:Joi.object().keys({ 
             name:Joi.string().required().uppercase().trim(),
             description:Joi.string().required(),
             image:Joi.string().allow(' ')    
-    }),
-    // params:Joi.object().keys({ 
-    //     categori_id:Joi.string()
-    // })
+    })
 }
 
+const updatecategory={
+    body:Joi.object().keys({ 
+            name:Joi.string().required().uppercase().trim(),
+            description:Joi.string().required(),
+            image:Joi.string().allow(' ')    
+    }),
+    params:Joi.object().keys({ 
+        categori_id:Joi.string().required().max(2)
+    })
+}
+
+const deletecategory={
+    params:Joi.object().keys({ 
+        categori_id:Joi.string().required().max(2)
+    })
+}
 module.exports={
-    createcategory
+    createcategory,
+    updatecategory,
+    deletecategory,
+    getcategory
 }
 
 
