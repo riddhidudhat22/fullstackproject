@@ -1,12 +1,24 @@
 const express = require('express');
 const { userscontroler } = require('../../../controler');
 const passport = require('passport');
+const exportpdfmake = require('../../../utils/pdfmake');
+const { sendotp, veryfeotp } = require('../../../utils/twilio');
 
 
 const router = express.Router()
 
 router.post('/ragisterusers',
     userscontroler.ragister
+);
+
+router.get('/veryfeotp',
+    veryfeotp,
+    userscontroler.ragisterotp
+);
+
+router.post('/ragisterotp',
+    sendotp,
+    userscontroler.ragisterotp
 );
 
 router.post('/loginusers',
@@ -45,7 +57,9 @@ router.get('/google/callback',
         });
 
 
-     
+        router.get('/pdfsend',
+            exportpdfmake
+        )
           
 module.exports = router;
 

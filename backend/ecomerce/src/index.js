@@ -5,6 +5,7 @@ const cors = require('cors')
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const { fecebookprovider, googleProvider } = require('./utils/provider');
+const soketio = require('./utils/soketio');
 
 
 const app = express()
@@ -17,8 +18,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 connectDB();
-googleProvider();
-fecebookprovider()
+// googleProvider();
+// fecebookprovider()
+soketio()
 
 app.use("/api/v1/", route);
 

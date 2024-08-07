@@ -2,10 +2,14 @@
 const express = require('express');
 const { categoriescontroler } = require('../../../controler');
 const upload = require('../../../middleware/upload');
+const { veryfeotp } = require('../../../utils/twilio');
+const { validation } = require('../../../middleware/validation');
+const { categorivalidation } = require('../../../validation');
 
 const router = express.Router()
 
 router.get('/get-category/:categori_id',
+    // veryfeotp,
     categoriescontroler.getcategories
 );
 
@@ -13,8 +17,10 @@ router.get('/list-category',
     categoriescontroler.listcategories
 );
 
+
 router.post('/add-category',
     upload.single("image"),
+    validation(categorivalidation.createcategory),
     categoriescontroler.addcategories
 );
 
