@@ -32,7 +32,7 @@ router.get('/getroductdata-by-subcategorydata/:subcategori_id',
 )
 
 
-router.get('/products/search/:name',
+router.get('/search',
     product.searchName
 )
 
@@ -55,5 +55,6 @@ router.get( '/new-arrivals',
 router.get('/count-categories',
     product.countCategories
 )
+
 
 module.exports = router;

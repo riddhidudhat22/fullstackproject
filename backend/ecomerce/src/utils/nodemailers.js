@@ -4,7 +4,7 @@ const sendmailer = () => {
     service: 'gmail',
     auth: {
       user: 'ridhdhidudhat2003@gmail.com',
-      pass: 'bgzsadulfgqdreth'
+      pass: process.env.SENDEMAIL_PASSWORD
     }
   });
   const mailOption = {

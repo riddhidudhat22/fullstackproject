@@ -3,8 +3,8 @@ const cloudinary = require('cloudinary').v2
 
 cloudinary.config({
     cloud_name: "dvsblqghc",
-    api_key: "724174957425618",
-    api_secret: "-WAkUkX8jrWrcJu1nas7NqQbstA" // Click 'View Credentials' below to copy your API secret
+    api_key: process.env.CLOUDNARY_KEY,
+    api_secret: process.env.CLOUDNARY_SIKRET_KEY // Click 'View Credentials' below to copy your API secret
 });
 
 const updatefile = async (localpath, foldername) => {

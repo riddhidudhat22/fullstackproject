@@ -218,25 +218,210 @@ const getproducttawith = async (req, res) => {
     }
 }
 
-const searchName = async (req, res) => {
+// const searchName = async (req, res) => {
 
-    const products = await Products.aggregate([
-        {
-            $match: {
-                "name": /^[a-zA-Z0-9!@#$&()`.+,/"-]*$/
+//     //Retrieve the product using sortOrder, rating, max, min, category, page = 1, limit = 10)
+//     try {
+//         console.log(req.body);
+//         const { sortOrder, rating, max, min, category, page, limit } = req.body
+
+//         const matchPip = {}
+
+//         if (rating) {
+//             matchPip['avgRating'] = { $gte: rating }
+//         }
+//         if (category) {
+//             matchPip['category_id'] = category
+//         }
+
+//         matchPip['variant.attributes.Price'] = {}
+
+//         if (min != undefined) {
+//             matchPip['variant.attributes.Price'].$gte = min
+//         }
+
+//         if (max != undefined) {
+//             matchPip['variant.attributes.Price'].$lte = max
+//         }
+
+//         console.log(matchPip);
+
+
+
+//         const pipline = [
+//             {
+//                 $lookup: {
+//                     from: 'variants',
+//                     localField: '_id',
+//                     foreignField: 'product_id',
+//                     as: 'variant'
+//                 }
+//             },
+//             {
+//                 $lookup: {
+//                     from: 'reviews',
+//                     localField: '_id',
+//                     foreignField: 'product_id',
+//                     as: 'review'
+//                 }
+//             },
+//             {
+//                 $addFields: {
+//                     avgrating: '$review.rating'
+//                 }
+//             },
+//             {
+//                 $unwind: {
+//                     path: '$variant',
+
+//                 }
+//             },
+//             {
+//                 $match: matchPip
+
+//                 // {
+//                 //     avgrating: { $gte: 4 },
+//                 //     category_id: 1,
+//                 //     'variant.attributes.Price': { $gte: 0, $lte: 10000 }
+//                 // }
+//             },
+//             {
+//                 $group: {
+//                     _id: '$_id',
+//                     name: { $first: '$name' },
+//                     variant: { $push: "$variant" },
+//                     review: { $push: "$review" }
+//                 }
+//             },
+//             {
+//                 $sort: {
+//                     name: sortOrder==="avbc" ? 1 : -1
+//                 }
+//             },
+//             {
+//                 $skip: 0
+//             },
+//             {
+//                 $limit: 10
+//             }
+//         ]
+
+
+//         // if (page > 0 && limit > 0) {
+//         //     pipline.push({ $skip: (page - 1) * limit })
+//         //     pipline.push({ $limit:  limit })
+//         // }
+
+//         const data = await Products.aggregate(pipline)
+//         console.log(data);
+
+//         // res.status(400).json({
+//         //     success: true,
+//         //     message: "Product data fected",
+//         //     data: data
+//         // })
+
+//     } catch (error) {
+
+//     }
+
+// }
+const searchName = async (req, res) => {
+    try {
+        console.log(req.body);
+        const { sortOrder, rating, max, min, category, page, limit} = req.body;
+
+        const matchPip = {};
+
+        if (rating) {
+            matchPip['avgRating'] = { "$gte": rating };
+        }
+        if (category) {
+            matchPip['category_id'] = category;
+        }
+
+        if (min != undefined || max != undefined) {
+            matchPip['variant.attributes.Price'] = {};
+            if (min != undefined) {
+                matchPip['variant.attributes.Price'].$gte = min;
+            }
+            if (max != undefined) {
+                matchPip['variant.attributes.Price'].$lte = max;
             }
         }
-    ])
 
-    res.status(200).json({
-        success: true,
-        message: "Products get  succesfully",
-        data: products
-    })
+        console.log(matchPip);
 
-    console.log(products);
+        const pipeline = [
+            {
+                $lookup: {
+                    from: 'variants',
+                    localField: '_id',
+                    foreignField: 'product_id',
+                    as: 'variant'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'reviews',
+                    localField: '_id',
+                    foreignField: 'product_id',
+                    as: 'review'
+                }
+            },
+            {
+                $addFields: {
+                    avgRating: { $avg: '$review.rating' }
+                }
+            },
+            {
+                $unwind: {
+                    path: '$variant'
+                }
+            },
+            {
+                $match: matchPip
+            },
+            {
+                $group: {
+                    _id: '$_id',
+                    name: { $first: '$name' },
+                    variant: { $push: "$variant" },
+                    review: { $push: "$review" },
+                    avgRating: { $first: "$avgRating" }
+                }
+            },
+            {
+                $sort: {
+                    name: sortOrder === "asc" ? 1 : -1
+                }
+            },
+            {
+                $skip: (page - 1) * limit
+            },
+            {
+                $limit: limit
+            }
+        ];
 
-}
+        const data = await Products.aggregate(pipeline);
+        console.log(data);
+
+        res.status(200).json({
+            success: true,
+            message: "Product data fetched",
+            data: data
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "An error occurred while fetching products",
+            error: error.message
+        });
+    }
+};
 
 const productsByCategory = async (req, res) => {
 

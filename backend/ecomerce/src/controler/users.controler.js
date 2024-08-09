@@ -17,15 +17,15 @@ const Tokenaccess = async (_id) => {
         role: user.role,
         expiresIn: "10 hours"
     },
-        'gff#hsdgbsugf4&bhj',
-        { expiresIn: 60 * 60 });
+    process.env.ACESS_TOKEN,
+        { expiresIn: process.env.ACESS_TOKEN_EXPIRY });
 
 
     const refreshtoken = await jwt.sign({
         _id: user._id
     },
-        'jdgf%jhsvg^jhs',
-        { expiresIn: "2 days" });
+        process.env.REFRESH_TOKEN,
+        { expiresIn: process.env.REFRESH_TOKEN_EXPIRY });
 
     user.refreshtoken = refreshtoken
     await user.save({ validateBeforeSave: false })

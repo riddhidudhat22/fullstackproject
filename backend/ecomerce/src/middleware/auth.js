@@ -14,7 +14,7 @@ const auth = (roles = []) => async (req, res, next) => {
         }
 
         try {
-            const validatetoken = await jwt.verify(token, "gff#hsdgbsugf4&bhj")
+            const validatetoken = await jwt.verify(token, process.env.ACESS_TOKEN)
             // console.log("aaaaa", validatetoken);
 
             const user = await Users.findById(validatetoken._id)
