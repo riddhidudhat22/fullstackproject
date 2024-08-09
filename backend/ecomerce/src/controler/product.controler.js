@@ -340,7 +340,7 @@ const searchName = async (req, res) => {
             matchPip['category_id'] = category;
         }
 
-        if (min != undefined || max != undefined) {
+        // if (min != undefined || max != undefined) {
             matchPip['variant.attributes.Price'] = {};
             if (min != undefined) {
                 matchPip['variant.attributes.Price'].$gte = min;
@@ -348,7 +348,7 @@ const searchName = async (req, res) => {
             if (max != undefined) {
                 matchPip['variant.attributes.Price'].$lte = max;
             }
-        }
+        // }
 
         console.log(matchPip);
 
