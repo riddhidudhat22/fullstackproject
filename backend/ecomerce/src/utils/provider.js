@@ -35,12 +35,12 @@ const googleProvider = async () => {
         done(null, user.id);
     });
 
-    passport.deserializeUser(async function (id, done) {
+    passport.deserializeUser(async function (data, done) {
         //   const user = await Users.findOne({ _id: id })
 
         try {
-            const user = await Users.findById(id);
-            done(null, user);
+            // const user = await Users.findById(id);
+            done(null, data);
         } catch (err) {
             done(err, null);
         }
@@ -80,7 +80,7 @@ const fecebookprovider = async () => {
     passport.deserializeUser(async function (id, done) {
         try {
             const user = await Users.findById(id);
-            done(null, user.id);
+            done(null, user);
         } catch (err) {
             done(err, null);
         }

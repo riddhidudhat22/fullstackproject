@@ -15,17 +15,17 @@ const Tokenaccess = async (_id) => {
     const accessToken = await jwt.sign({
         _id: user._id,
         role: user.role,
-        expiresIn: "10 hours"
+        expiresIn: 36000000
     },
-    process.env.ACESS_TOKEN,
-        { expiresIn: process.env.ACESS_TOKEN_EXPIRY });
+        process.env.ACESS_TOKEN,
+        { expiresIn: 60*60 });
 
 
     const refreshtoken = await jwt.sign({
         _id: user._id
     },
         process.env.REFRESH_TOKEN,
-        { expiresIn: process.env.REFRESH_TOKEN_EXPIRY });
+        { expiresIn: 36000 });
 
     user.refreshtoken = refreshtoken
     await user.save({ validateBeforeSave: false })
@@ -34,24 +34,25 @@ const Tokenaccess = async (_id) => {
 }
 
 const ragister = async (req, res) => {
-    // console.log("listcategories");
+    console.log("ragister",req.body);
     try {
-        console.log(req.body);
+        console.log("saaas",req.body);
+        console.log(req.file);
 
         const { email, password } = req.body
         const user = await Users.findOne(
             { $or: [{ email }] }
         )
-
-        console.log(user);
-
+        console.log('jjjjjj',user);
+       
         if (user) {
-           return res.status(409).json({
+            return res.status(409).json({
                 success: false,
                 message: "user alredy exist"
             })
         }
-        console.log(user);
+        // console.log(user);
+        
 
         const hashassword = await bcrypt.hash(password, 10);
         console.log(hashassword);
@@ -62,8 +63,8 @@ const ragister = async (req, res) => {
                 success: false
             })
         }
-
         const dataf = await Users.create({ ...req.body, password: hashassword })
+        // const dataf = await Users.create({ ...req.body, password: hashassword,avtar:req.file.path })
         if (!dataf) {
             res.status(500).json({
                 success: false,
@@ -79,8 +80,8 @@ const ragister = async (req, res) => {
                 message: "internal server error" + error.message
             })
         }
-        sendmailer()
-      
+        // sendmailer()
+
         res.status(200).json({
             success: true,
             message: "ragister succesfully",
@@ -94,19 +95,22 @@ const ragister = async (req, res) => {
     }
 }
 
-const ragisterotp=async(req,res)=>{
+const ragisterotp = async (req, res) => {
     res.status(200).json({
         success: true,
         message: "ragister otp succsessfully send."
-     
+
     })
 }
+
 const login = async (req, res) => {
     try {
-        const { emali, password } = req.body
+        const { email, password } = req.body
 
+        console.log("fffffffffffffff", email, password);
+        
         const user = await Users.findOne(
-            { $or: [{ emali }] }
+            { $or: [{ email }] }
         );
 
         console.log(user);
@@ -121,84 +125,183 @@ const login = async (req, res) => {
 
         const validateUser = await bcrypt.compare(password, user.password)
         console.log(validateUser);
+
         if (!validateUser) {
             return res.status(401).json({
                 success: false,
-                message: "user not consist"
+                message: "password incorect"
             })
         }
 
-        const { accessToken, refreshtoken } = await Tokenaccess(user._id)
-        console.log(accessToken, refreshtoken);
+        const { accessToken , refreshtoken } = await Tokenaccess(user._id)
+        console.log(accessToken, "sfssf",refreshtoken);
 
         const user1 = await Users.findById({ _id: user._id }).select('-password -refreshtoken');
 
-        const option={
-            httpOnly:true,
-            sequre:true
+        const optionaccess = {
+            httpOnly: true,
+            sequre: true,
+            maxAge: 36000000
         }
-
+        const optionrefres = {
+            httpOnly: true,
+            sequre: true,
+            maxAge: 30*24*60*60*1000
+        }
         res.status(200)
-            .cookie("AccessToken",accessToken,option)
-            .cookie("refreshtoken",refreshtoken,option)
+            .cookie("AccessToken", accessToken, optionaccess)
+            .cookie("refreshtoken", refreshtoken, optionrefres)
             .json({
                 success: true,
                 message: "data fetch successfull",
-                data:{
-                    user:{...user1.toObject(),accessToken}
-                }
+                data:{ ...user1.toObject(), accessToken }
             })
     } catch (error) {
         console.log(error);
     }
 }
 
-const newtoken=async(req,res)=>{
-// console.log(req.body);
+const newtoken = async (req, res) => {
+    // console.log(req.body);
 
     try {
-        console.log("body++",req.cookie.refreshtoken);
+        console.log("body++", req.cookies.refreshtoken);
+
+        const validateToken = await jwt.verify(req.cookies.refreshtoken, process.env.REFRESH_TOKEN)
+        console.log("uuu", validateToken);
+
+        if (!validateToken) {
+            return res.status(401).json({
+                success: false,
+                message: "invalid refresh token."
+            })
+        }
+
+        const user = await Users.findById(validateToken._id)
+        console.log(user, "ajikshd");
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "user is not found."
+            })
+        }
+
+
+        const { accessToken , refreshtoken } = await Tokenaccess(user._id)
+
+        if (req.cookies.refreshtoken != user.toObject().refreshtoken) {
+            return res.status(401).json({
+                success: false,
+                message: "invalid Token."
+            })
+        }
+
+        const option = {
+            httpOnly: true,
+            secure: true
+        }
+
+        res.status(200)
+            .cookie("accessToken", accessToken, option)
+            .cookie("refreshtoken", refreshtoken, option)
+            .json({
+                success: true,
+                message: "Refresh Token Sucessfully",
+                data: {
+                    user: { accessToken }
+                }
+            })
     } catch (error) {
-     console.log(error);   
+        res.status(500).json({
+            success: false,
+            message: "internal server error" + error.message
+        })
     }
 }
 
-const logout=async(req,res)=>{
+const logout = async (req, res) => {
     try {
-        const user=await Users.findByIdAndUpdate(
+        console.log("rrrrrrrrrrrrrrrrrrrrrrrrrr",req.body.id);
+        const user = await Users.findByIdAndUpdate(
             req.body._id,
             {
-                $unset:{
-                    refreshtoken:1
+                $unset: {
+                    refreshtoken: 1
                 }
             },
             {
-                new:true
+                new: true
             }
         )
+        console.log(user);
+        
         if (!user) {
             return res.status(400).json({
                 success: false,
-                message: "user not login"
+                message: "user not logout"
             })
         }
-        console.log(user);
-        res.status(200).json({
+    
+         res.status(200)
+        .clearCookie("AccessToken")
+        .clearCookie("refreshtoken")
+        .json({
             success: true,
             message: "logout successfull",
 
         })
     } catch (error) {
-        return res.status(500).json({
+        return res.status(500)
+        // .clearCoockie("AccessToken")
+        .json({
             success: false,
-            message:"logout fail"
+            message: "Internal server error: " + error.message
         })
+
     }
 }
+
+const authcheck=async(req,res)=>{
+   try {
+    const accessToken=req.cookies.AccessToken
+    console.log("accessToken",accessToken);
+    
+    if (!accessToken) {
+        return res.status(401).json({
+            success: false,
+            message: "accesstoken not found"
+        })
+    }
+
+    const verifytoken=await jwt.verify(accessToken,process.env.ACESS_TOKEN)
+    console.log('verifytoken',verifytoken);
+
+    if (!verifytoken) {
+        return res.status(400).json({
+            success: false,
+            message: "Invalid Token"
+        })
+    }
+    return res.status(200).json({
+        success: true,
+        message: "User Authenticated",
+        data: verifytoken
+    })
+   } catch (error) {
+    return res.status(500).json({
+        success: false,
+        message: "Internal server error" + error
+    })
+   }
+}
+
 module.exports = {
     ragister,
     login,
     newtoken,
     logout,
-    ragisterotp
+    ragisterotp,
+    authcheck,
+    Tokenaccess
 }

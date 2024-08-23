@@ -5,6 +5,7 @@ const upload = require('../../../middleware/upload');
 const { veryfeotp } = require('../../../utils/twilio');
 const { validation } = require('../../../middleware/validation');
 const { categorivalidation } = require('../../../validation');
+const { auth } = require('../../../middleware/auth');
 
 const router = express.Router()
 
@@ -14,6 +15,7 @@ router.get('/get-category',
 );
 
 router.get('/list-category',
+    auth(["admin","employe",'user']),
     categoriescontroler.listcategories
 );
 

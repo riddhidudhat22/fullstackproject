@@ -619,3 +619,6 @@ module.exports = {
     newArrivals,
     countCategories
 }
+
+
+// http://localhost:8000/api/v1/products/search?sortOrder=asc&rating=4&max=10000&min=0&category=1&page=1&limit=1

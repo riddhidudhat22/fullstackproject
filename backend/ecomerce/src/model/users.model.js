@@ -29,6 +29,9 @@ const usersScheema = new mongoose.Schema(
             type: String,
             trim: true,
         },
+        avtar:{
+            type: String,
+        },
         googleId:{
             type: String,
         },

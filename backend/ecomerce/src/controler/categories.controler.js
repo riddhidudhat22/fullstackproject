@@ -3,6 +3,7 @@ const Categories = require("../model/categories.model");
 
 const listcategories = async (req, res) => {
     console.log("listcategories", req.query.page, req.query.pageSize);
+    
     let page = parseInt(req.query.page)
     let pagesize = parseInt(req.query.pageSize)
     try {
@@ -121,13 +122,13 @@ const deletecategories = async (req, res) => {
 }
 
 const udatecategories = async (req, res) => {
-    console.log(req.params.categori_id, req.body);
+    console.log("ddddddddddddddddddddd", req.params.categori_id, req.body);
     try {
         const caategori = await Categories.findByIdAndUpdate(req.params.categori_id, req.body, { new: true, runValidators: true })
         console.log(caategori);
 
         if (!caategori) {
-            res.status(400).json({
+            return res.status(400).json({
                 success: false,
                 message: 'categori not found',
             })

@@ -14,10 +14,19 @@ import PrivateRoute from './PrivateRoute';
 import Review from '../user/container/Review/Review';
 import { ThemeContext } from '../context/Themcontext';
 import Category from '../admin/container/Category/Category';
+import Login from '../user/container/Login/Login'
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { authcheck } from '../redux/reducer/slice/authlogin';
 
 
 function UserRoute(props) {
   const theme=useContext(ThemeContext)
+  const dispatch=useDispatch()
+
+  useEffect(()=>{
+    dispatch(authcheck())
+  },[])
   return (
     <>
     <div className={theme.theme}>
@@ -37,6 +46,8 @@ function UserRoute(props) {
         <Route exact path="/error" element={<Error />} />
         <Route exact path="/contact" element={<Contact />} />
         <Route exact path="/Category" element={<Category />} />
+        <Route exact path="/login" element={<Login />} />
+
       </Routes>
       <Footer />
       </div>

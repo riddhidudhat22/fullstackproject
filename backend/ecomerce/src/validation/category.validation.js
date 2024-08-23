@@ -21,13 +21,13 @@ const updatecategory={
             image:Joi.string().allow(' ')    
     }),
     params:Joi.object().keys({ 
-        categori_id:Joi.string().required().max(2)
+        categori_id:Joi.string().required()
     })
 }
 
 const deletecategory={
     params:Joi.object().keys({ 
-        categori_id:Joi.string().required().max(2)
+        categori_id:Joi.string().required()
     })
 }
 module.exports={

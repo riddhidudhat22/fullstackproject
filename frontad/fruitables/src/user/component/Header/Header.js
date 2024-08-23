@@ -8,7 +8,8 @@ import { subcategoriget } from '../../../redux/reducer/slice/subcategori.slice';
 import { getdata, getdatapro } from '../../../redux/action/product.action';
 import { getcategori } from '../../../redux/action/categori.action';
 import { Box, Button, IconButton, Menu, MenuItem } from '@mui/material';
-
+import { logout } from '../../../redux/reducer/slice/authlogin';
+import LogoutIcon from '@mui/icons-material/Logout';
 function Header(props) {
 
   const cart = useSelector(state => state.cart);
@@ -35,14 +36,25 @@ function Header(props) {
   const product = useSelector(state => state.product);
   console.log("product++", product);
 
+  const { isAuthantication, user } = useSelector(state => state.auth) ;
+  console.log(user)
+
+  const handlelogout = () => {
+    console.log(user._id);
+    
+    // if (user && user._id) {
+      dispatch(logout(user._id))
+    // dispatch(logout(user._id))
+  // }
+  }
   const [categoryAnchorEl, setCategoryAnchorEl] = useState('');
   const [subcategoryAnchorEl, setSubcategoryAnchorEl] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedSubcategory, setSelectedSubcategory] = useState('');
 
   useEffect(() => {
-    dispatch(getcategori());
-    dispatch(subcategoriget());
+    // dispatch(getcategori());
+    // dispatch(subcategoriget());
     dispatch(getdatapro());
   }, [dispatch]);
 
@@ -111,9 +123,14 @@ function Header(props) {
                   <i className="fa fa-shopping-bag fa-2x" />
                   <span className="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style={{ top: '-5px', left: 15, height: 20, minWidth: 20 }}>{cart_Count}</span>
                 </NavLink>
-                <a href="#" className="my-auto">
-                  <i className="fas fa-user fa-2x" />
-                </a>
+                <NavLink to="/login" className="my-auto">
+                  {
+                    isAuthantication ? <LogoutIcon onClick={handlelogout}/>:
+                    // <button onClick={handlelogout}>logout</button> :
+                      <i className="fas fa-user fa-2x" />
+                  }
+
+                </NavLink>
                 <IconButton onClick={handletheme}>
                   {themcontext.theme === 'light' ? <Brightness7Icon className='iconcolor' /> : <LightModeIcon className='iconcolor' />}
                 </IconButton>
@@ -123,7 +140,7 @@ function Header(props) {
         </div>
       </div>
       {/* Navbar End */}
-      {/* Modal Search Start */}
+      {/* Modal Search Start */}user._id
       <div className="modal fade" id="searchModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-fullscreen">
           <div className="modal-content rounded-0">
@@ -145,7 +162,7 @@ function Header(props) {
 
       <div>
 
-        <Box sx={{ display: 'flex', padding: 2 }}>
+        {/* <Box sx={{ display: 'flex', padding: 2 }}>
           {categories.categori.map(category => (
             <Box key={category.id} sx={{ margin: '0 10px' }}>
               <Button
@@ -178,7 +195,7 @@ function Header(props) {
 
             </Box>
           ))}
-        </Box>
+        </Box> */}
 
         {selectedCategory && selectedSubcategory && (
           <>
@@ -190,48 +207,48 @@ function Header(props) {
                   <Box key={v._id} sx={{ margin: '10px 0' }}>
                     {/* <div className="container-fluid fruite py-5">
                       <div className="container py-5"> */}
-                        <div className="tab-class text-center"></div>
-                        <div className="tab-content">
-                          <div id="tab-1" className="tab-pane fade show p-0 active">
-                            <div className="row g-4">
-                              <div className="col-md-6 col-lg-4 col-xl-3">
-                                <div className="rounded position-relative fruite-item">
-                                  <div className="fruite-img">
-                                    {v.image && <img
-                                      src={v.image.url}
-                                      className="img-fluid w-100 rounded-top"
-                                      alt=""
-                                    />}
-                                  </div>
-                                  <div
-                                    className="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                                    style={{ top: 10, left: 10, textAlign: "center" }}
-                                  >
-                                    Fruits
-                                  </div>
-                                  <div className="p-4 border border-secondary border-top-0 rounded-bottom">
-                                    <h4>{v.name}</h4>
-                                    <p>{v.description}</p>
-                                    <div className="d-flex justify-content-between flex-lg-wrap">
-                                      <p className="text-dark fs-5 fw-bold mb-0">
-                                        $ {v.price} / kg
-                                      </p>
-                                      <p>{v.stock} stock</p>
-                                      {/* <a
+                    <div className="tab-class text-center"></div>
+                    <div className="tab-content">
+                      <div id="tab-1" className="tab-pane fade show p-0 active">
+                        <div className="row g-4">
+                          <div className="col-md-6 col-lg-4 col-xl-3">
+                            <div className="rounded position-relative fruite-item">
+                              <div className="fruite-img">
+                                {v.image && <img
+                                  src={v.image.url}
+                                  className="img-fluid w-100 rounded-top"
+                                  alt=""
+                                />}
+                              </div>
+                              <div
+                                className="text-white bg-secondary px-3 py-1 rounded position-absolute"
+                                style={{ top: 10, left: 10, textAlign: "center" }}
+                              >
+                                Fruits
+                              </div>
+                              <div className="p-4 border border-secondary border-top-0 rounded-bottom">
+                                <h4>{v.name}</h4>
+                                <p>{v.description}</p>
+                                <div className="d-flex justify-content-between flex-lg-wrap">
+                                  <p className="text-dark fs-5 fw-bold mb-0">
+                                    $ {v.price} / kg
+                                  </p>
+                                  <p>{v.stock} stock</p>
+                                  {/* <a
                 href="#"
                 className="btn border border-secondary rounded-pill px-3 text-primary"
                 onClick={(event) => handalproduct(event, v._id)}
               >
                 Add to cart
               </a> */}
-                                    </div>
-                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      {/* </div>
+                      </div>
+                    </div>
+                    {/* </div>
                     </div> */}
                   </Box>
                 ))}

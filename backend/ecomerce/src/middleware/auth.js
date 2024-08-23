@@ -3,11 +3,11 @@ const Users = require('../model/users.model');
 
 const auth = (roles = []) => async (req, res, next) => {
     try {
-        const token = req.cookies.AccessToken || req.header("Authorization")?.replace("Beareer ", "")
+        const token = req.cookies.AccessToken || req.headers("Authorization")?.replace("Beareer ", "")
         // console.log(token);
 
         if (!token) {
-            return res.status(404).json({
+            return res.status(401).json({
                 success: false,
                 message: "token required"
             })
@@ -21,7 +21,7 @@ const auth = (roles = []) => async (req, res, next) => {
             console.log(user, roles);
 
             if (!user) {
-                return res.status(404).json({
+                return res.status(400).json({
                     success: false,
                     message: "user not found"
                 })
@@ -40,7 +40,7 @@ const auth = (roles = []) => async (req, res, next) => {
         } catch (error) {
             return res.status(400).json({
                 success: false,
-                message: "Invalid token"
+                message: "Invalid token" + error.message
             })
         }
 
